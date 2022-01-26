@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Roles */
+/* @var $model common\models\Roles */
 
 $this->title = Yii::t('cp.roles', 'O\'zgartirish: {name}', [
     'name' => $model->name,

@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\search\DiseaseCategorySearch */
+/* @var $searchModel common\models\search\DiseaseCategorySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Yii::t('cp.disease_category', 'Kasalliklar toyifasi');

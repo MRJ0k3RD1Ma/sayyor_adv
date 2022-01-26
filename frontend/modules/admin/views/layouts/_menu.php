@@ -59,6 +59,7 @@
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="<?= Yii::$app->urlManager->createUrl(['/cp/employees/index'])?>" data-key="t-basic-tables"><?= Yii::t('cp.menu','Foydalanuvchilar')?></a></li>
+                        <li><a href="<?= Yii::$app->urlManager->createUrl(['/cp/post-list/index'])?>" data-key="t-basic-tables"><?= Yii::t('cp.menu','Lavozimlar ro\'yhati')?></a></li>
                         <li><a href="<?= Yii::$app->urlManager->createUrl(['/cp/roles/index'])?>" data-key="t-basic-tables"><?= Yii::t('cp.menu','Foydalanuvchilar huquqlari')?></a></li>
                         <li><a href="<?= Yii::$app->urlManager->createUrl(['/cp/organizations/index'])?>" data-key="t-basic-tables"><?= Yii::t('cp.menu','Tashkilotlar')?></a></li>
                         <li><a href="<?= Yii::$app->urlManager->createUrl(['/cp/organization-type/index'])?>" data-key="t-basic-tables"><?= Yii::t('cp.menu','Tashkilot turlari')?></a></li>

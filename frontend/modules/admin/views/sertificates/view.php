@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Sertificates */
+/* @var $model common\models\Sertificates */
 
 $this->title = $model->sert_id;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('cp.sertificates', 'Dalolatnomalar'), 'url' => ['index']];
@@ -71,9 +71,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 </tr>
             </thead>
             <tbody>
-                <?php $n=0; foreach (\app\models\Samples::find()->where(['sert_id'=>$model->id])->all() as $item): $n++;
-                $cnt_vac = \app\models\Vaccination::find()->where(['animal_id'=>$item->animal_id])->count('*');
-                $cnt_eml = \app\models\Emlash::find()->where(['animal_id'=>$item->animal_id])->count('*');
+                <?php $n=0; foreach (\common\models\Samples::find()->where(['sert_id'=>$model->id])->all() as $item): $n++;
+                $cnt_vac = \common\models\Vaccination::find()->where(['animal_id'=>$item->animal_id])->count('*');
+                $cnt_eml = \common\models\Emlash::find()->where(['animal_id'=>$item->animal_id])->count('*');
                 if($cnt_vac > $cnt_eml){
                     $cnt = $cnt_vac;
                 }else{
@@ -96,8 +96,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         <td rowspan="<?= $cnt + 1?>"><?= $item->kod?></td>
                     </tr>
                     <?php
-                    $vac = \app\models\Vaccination::find()->where(['animal_id'=>$item->animal_id])->orderBy(['disease_date'=>SORT_DESC])->all();
-                    $eml = \app\models\Emlash::find()->where(['animal_id'=>$item->animal_id])->orderBy(['emlash_date'=>SORT_DESC])->all();
+                    $vac = \common\models\Vaccination::find()->where(['animal_id'=>$item->animal_id])->orderBy(['disease_date'=>SORT_DESC])->all();
+                    $eml = \common\models\Emlash::find()->where(['animal_id'=>$item->animal_id])->orderBy(['emlash_date'=>SORT_DESC])->all();
                     for ($i=0;$i<$cnt; $i++):?>
                     <tr>
                         <td><?= isset($vac[$i]) ? $vac[$i]->disease->name_uz : ' ' ?></td>

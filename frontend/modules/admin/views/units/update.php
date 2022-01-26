@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Units */
+/* @var $model common\models\Units */
 
 $this->title = Yii::t('cp.units', 'O\'zgartirish: {name}', [
     'name' => $model->id,

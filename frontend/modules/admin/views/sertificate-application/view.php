@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\SertificateApplication */
+/* @var $model common\models\SertificateApplication */
 
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('cp.sertificate_application', 'Arizalar ro\'yhati'), 'url' => ['index']];

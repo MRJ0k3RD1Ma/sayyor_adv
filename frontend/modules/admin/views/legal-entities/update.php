@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\LegalEntities */
+/* @var $model common\models\LegalEntities */
 
 $this->title = Yii::t('cp.legal_entities', 'O\'zgartirish: {name}', [
     'name' => $model->name,

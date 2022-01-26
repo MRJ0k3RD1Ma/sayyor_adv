@@ -3,8 +3,8 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
-/* @var $model app\models\Vaccination */
-/* @var $animal app\models\Animals */
+/* @var $model common\models\Vaccination */
+/* @var $animal common\models\Animals */
 
 $this->title = Yii::t('cp.animals', 'Emlash: {name}', [
     'name' => $animal->type->name_uz,
@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = Yii::t('cp.animals', 'Emlash');
         <?php $form = ActiveForm::begin(); ?>
 
 
-        <?= $form->field($model, 'disease_id')->dropDownList(\yii\helpers\ArrayHelper::map(\app\models\Diseases::find()->all(),'id','name_uz'),['prompt'=>Yii::t('cp.animals','Kasallikni talang')]) ?>
+        <?= $form->field($model, 'disease_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Diseases::find()->all(),'id','name_uz'),['prompt'=>Yii::t('cp.animals','Kasallikni talang')]) ?>
 
         <?= $form->field($model, 'disease_date')->textInput(['type'=>'date']) ?>
 

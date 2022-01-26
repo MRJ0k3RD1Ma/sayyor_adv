@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Animals */
+/* @var $model common\models\Animals */
 
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('cp.animals', 'Hayvonlar'), 'url' => ['index']];
@@ -57,7 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     </tr>
                 </thead>
                 <tbody>
-                    <?php $n=0;  foreach (\app\models\Vaccination::find()->where(['animal_id'=>$model->id])->all() as $item): $n++;?>
+                    <?php $n=0;  foreach (\common\models\Vaccination::find()->where(['animal_id'=>$model->id])->all() as $item): $n++;?>
                         <tr>
                             <td><?= $n;?></td>
                             <td><?= $item->vaccina->name ?></td>

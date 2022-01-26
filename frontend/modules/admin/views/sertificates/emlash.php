@@ -3,8 +3,8 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
-/* @var $model app\models\Vaccination */
-/* @var $animal app\models\Animals */
+/* @var $model common\models\Vaccination */
+/* @var $animal common\models\Animals */
 
 $this->title = Yii::t('cp.animals', 'Davolash: {name}', [
     'name' => $animal->type->name_uz,

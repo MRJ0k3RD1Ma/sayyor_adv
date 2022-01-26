@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\DiseaseGroups */
+/* @var $model common\models\DiseaseGroups */
 
 $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('cp.disease_groups', 'Kasallik guruhlari'), 'url' => ['index']];

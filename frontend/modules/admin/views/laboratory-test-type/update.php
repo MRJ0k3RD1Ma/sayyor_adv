@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\LaboratoryTestType */
+/* @var $model common\models\LaboratoryTestType */
 
 $this->title = Yii::t('cp.laboratory_test_type', 'O\'zgartirish: {name}', [
     'name' => $model->id,

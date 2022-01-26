@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\DiseaseGroups */
+/* @var $model common\models\DiseaseGroups */
 
 $this->title = Yii::t('cp.disease_groups', 'O\'zgartirish: {name}', [
     'name' => $model->id,

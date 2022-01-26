@@ -29,7 +29,6 @@ class Roles extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'string', 'max' => 50],
-            [['id'], 'exist', 'skipOnError' => true, 'targetClass' => PostList::className(), 'targetAttribute' => ['id' => 'def_role']],
         ];
     }
 
@@ -44,13 +43,7 @@ class Roles extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * Gets query for [[Id0]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getId0()
-    {
-        return $this->hasOne(PostList::className(), ['def_role' => 'id']);
+    public function getPost(){
+        return $this->hasMany(PostList::className(),['def_role'=>'id']);
     }
 }

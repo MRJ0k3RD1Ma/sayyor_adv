@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\AnimalCategory */
+/* @var $model common\models\AnimalCategory */
 
 $this->title = Yii::t('cp', 'O\'zgartirish: {name}', [
     'name' => $model->id,

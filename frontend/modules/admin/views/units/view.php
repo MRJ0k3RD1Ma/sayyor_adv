@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Units */
+/* @var $model common\models\Units */
 
 $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('cp.units', 'Birliklar'), 'url' => ['index']];

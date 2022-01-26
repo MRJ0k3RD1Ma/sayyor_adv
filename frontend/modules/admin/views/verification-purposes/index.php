@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\search\VerificationPurposesSearch */
+/* @var $searchModel common\models\search\VerificationPurposesSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Yii::t('cp.verification_purposes', 'Tekshirish maqsadlari');

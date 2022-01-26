@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Sertificates */
+/* @var $model common\models\Sertificates */
 
 $this->title = Yii::t('cp.sertificates', 'Update Sertificates: {name}', [
     'name' => $model->sert_id,

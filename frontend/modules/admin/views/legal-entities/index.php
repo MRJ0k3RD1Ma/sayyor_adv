@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\search\LegalEntitiesSearch */
+/* @var $searchModel common\models\search\LegalEntitiesSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Yii::t('cp.legal_entities', 'Yuridik shaxslar');

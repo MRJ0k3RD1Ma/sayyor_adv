@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\SampleBoxes */
+/* @var $model common\models\SampleBoxes */
 
 $this->title = Yii::t('cp.sample_boxes', 'O\'zgartirish: {name}', [
     'name' => $model->id,

@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\VerificationPurposes */
+/* @var $model common\models\VerificationPurposes */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 

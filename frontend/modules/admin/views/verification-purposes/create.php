@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\VerificationPurposes */
+/* @var $model common\models\VerificationPurposes */
 
 $this->title = Yii::t('cp.verification_purposes', 'Tekshirish maqsadi qo\'shish');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('cp.verification_purposes', 'Tekshirish maqsadlari'), 'url' => ['index']];

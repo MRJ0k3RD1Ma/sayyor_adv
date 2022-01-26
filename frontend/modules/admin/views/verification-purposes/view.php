@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\VerificationPurposes */
+/* @var $model common\models\VerificationPurposes */
 
 $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('cp.verification_purposes', 'Tekshirish maqsadlari'), 'url' => ['index']];

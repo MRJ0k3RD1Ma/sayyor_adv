@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Sertificates */
+/* @var $model common\models\Sertificates */
 
 $this->title = Yii::t('cp.sertificates', 'Dalolatnoma qo\'shish');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('cp.sertificates', 'Dalolatnomalar'), 'url' => ['index']];

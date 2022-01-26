@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\VerificationPurposes */
+/* @var $model common\models\VerificationPurposes */
 
 $this->title = Yii::t('cp.verification_purposes', 'O\'zgartirish: {name}', [
     'name' => $model->id,

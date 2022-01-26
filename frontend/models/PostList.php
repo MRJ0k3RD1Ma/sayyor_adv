@@ -1,6 +1,6 @@
 <?php
 
-namespace common\models;
+namespace app\models;
 
 use Yii;
 
@@ -13,6 +13,7 @@ use Yii;
  *
  * @property Roles $defRole
  * @property EmpPosts[] $empPosts
+ * @property EmpPostsHistory[] $empPostsHistories
  */
 class PostList extends \yii\db\ActiveRecord
 {
@@ -42,9 +43,9 @@ class PostList extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'name' => Yii::t('app', 'Lavozim'),
-            'def_role' => Yii::t('app', 'Huquqi'),
+            'id' => Yii::t('model', 'ID'),
+            'name' => Yii::t('model', 'Name'),
+            'def_role' => Yii::t('model', 'Def Role'),
         ];
     }
 
@@ -66,5 +67,15 @@ class PostList extends \yii\db\ActiveRecord
     public function getEmpPosts()
     {
         return $this->hasMany(EmpPosts::className(), ['post_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[EmpPostsHistories]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getEmpPostsHistories()
+    {
+        return $this->hasMany(EmpPostsHistory::className(), ['post_id' => 'id']);
     }
 }
