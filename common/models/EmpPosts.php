@@ -55,12 +55,12 @@ class EmpPosts extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'emp_id' => Yii::t('app', 'Emp ID'),
-            'post_id' => Yii::t('app', 'Post ID'),
-            'date' => Yii::t('app', 'Date'),
-            'state_id' => Yii::t('app', 'State ID'),
-            'status_id' => Yii::t('app', 'Status ID'),
-            'org_id' => Yii::t('app', 'Org ID'),
+            'emp_id' => Yii::t('app', 'Hodim'),
+            'post_id' => Yii::t('app', 'Lavozim'),
+            'date' => Yii::t('app', 'Tayinlangan sana'),
+            'state_id' => Yii::t('app', 'Holati'),
+            'status_id' => Yii::t('app', 'Status'),
+            'org_id' => Yii::t('app', 'Tashkilot'),
         ];
     }
 

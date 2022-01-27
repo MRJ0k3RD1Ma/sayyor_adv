@@ -27,17 +27,47 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                     ]) ?>
                 </p>
-                <?php if(Yii::$app->security->validatePassword("admin",$model->password)) echo 'ok'; else echo 'nooo'?>
                 <?= DetailView::widget([
                     'model' => $model,
                     'attributes' => [
-                        'id',
+//                        'id',
                         'name',
                         'email:email',
                         'phone',
-                        'password',
+//                        'password',
                     ],
                 ]) ?>
+
+               <h3 class="title"><?= Yii::t('cp','Lavozimlar ro\'yhati')?>
+               <span style="float: right"><a href="<?= Yii::$app->urlManager->createUrl(['/cp/employees/add','id'=>$model->id])?>" class="btn btn-primary"><?= Yii::t('cp','Lavozim qo\'shish')?></a></span>
+               </h3>
+               <div class="table-responsive">
+                   <table class="table table-hover  table-bordered">
+                       <thead>
+                       <tr>
+                           <th>№</th>
+                           <th><?= Yii::t('cp','Lavozim nomi')?></th>
+                           <th><?= Yii::t('cp','Status')?></th>
+                           <th><?= Yii::t('cp','Ruhsati')?></th>
+                           <th><?= Yii::t('cp','Holati')?></th>
+                           <th><?= Yii::t('cp','Amallar')?></th>
+                       </tr>
+                       </thead>
+                       <tbody>
+                       <?php $n=0; foreach (\common\models\EmpPosts::find()->where(['emp_id'=>$model->id])->all() as $item): $n++?>
+                            <tr>
+                                <td><?= $n?></td>
+                                <td><?= $item->post->name?></td>
+                                <td><?= $item->status->name?></td>
+                                <td><?= $item->post->defRole->name?></td>
+                                <td><?= $item->state->name?></td>
+                                <td><a data-method="post" data-confirm="<?= Yii::t('cp', 'Are you sure you want to delete this item?')?>" href="<?= Yii::$app->urlManager->createUrl(['/cp/employees/del','id'=>$item->id])?>"><span class="fa fa-trash"></span></a></td>
+                            </tr>
+                       <?php endforeach;?>
+                       </tbody>
+                   </table>
+               </div>
+
             </div>
         </div>
     </div>

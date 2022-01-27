@@ -3,6 +3,7 @@
 namespace app\modules\admin\controllers;
 
 use common\models\Employees;
+use common\models\EmpPosts;
 use common\models\search\EmployeesSearch;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -28,6 +29,7 @@ class EmployeesController extends Controller
                     'class' => VerbFilter::className(),
                     'actions' => [
                         'delete' => ['POST'],
+                        'del' => ['POST'],
                     ],
                 ],
             ]
@@ -46,6 +48,21 @@ class EmployeesController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionAdd($id){
+        $model = new EmpPosts();
+        $model->emp_id = $id;
+        if($m = EmpPosts::findOne($model->emp_id)){
+            $model->org_id = $m->org_id;
+        }
+        if($model->load(Yii::$app->request->post()) and $model->save()){
+            return $this->redirect(['view','id'=>$id]);
+        }
+
+        return $this->render('add',[
+            'model'=>$model
         ]);
     }
 
@@ -77,6 +94,8 @@ class EmployeesController extends Controller
                 $model->encrypt();
 
                 if($model->save()){
+
+
                     return $this->redirect(['view', 'id' => $model->id]);
                 }else{
                     return $this->render('create', [
@@ -154,6 +173,13 @@ class EmployeesController extends Controller
         }
 
         throw new NotFoundHttpException(Yii::t('cp', 'The requested page does not exist.'));
+    }
+
+    public function actionDel($id){
+        $model = EmpPosts::findOne($id);
+        $i = $model->emp_id;
+        if($model->delete());
+        return $this->redirect(['view','id'=>$i]);
     }
 
 }

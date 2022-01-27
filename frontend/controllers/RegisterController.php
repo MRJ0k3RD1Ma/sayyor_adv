@@ -2,10 +2,11 @@
 
 namespace frontend\controllers;
 
+use common\models\Sertificates;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-
+use Yii;
 
 /**
  * Site controller
@@ -63,7 +64,10 @@ class RegisterController extends Controller
     }
 
     public function actionCreatetest(){
-        $code = substr(date('Y'),2,2).'-1-';
+        $user = Yii::$app->user->identity;
+        $code = substr(date('Y'),2,2).'-1-'.$user->posts->org_id.'-';
+        $num = Sertificates::find()->where();
+
         echo $code;
         exit;
     }

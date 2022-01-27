@@ -62,7 +62,9 @@ class Employees extends \yii\db\ActiveRecord  implements \yii\web\IdentityInterf
     public function getEmpPosts()
     {
         return $this->hasOne(EmpPosts::className(), ['emp_id' => 'id']);
-    }  public static function findIdentity($id)
+    }
+
+    public static function findIdentity($id)
 {
     /*$sql = '(
      (`active_to` IS NOT NULL and `active_each`IS NOT NULL) and (CURDATE() BETWEEN `active_to` and `active_each`)
