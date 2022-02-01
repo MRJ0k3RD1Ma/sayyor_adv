@@ -61,7 +61,7 @@ use yii\widgets\ActiveForm;
             })        
         })
         $('#vetsites-district').change(function(){
-            $.get('{$url_qfi}?id='+$('#vetsites-district').val()).done(function(data){
+            $.get('{$url_qfi}?id='+$('#vetsites-district').val()+'&regid='+$('#vetsites-region').val()).done(function(data){
                 $('#vetsites-soato').empty();
                 $('#vetsites-soato').append(data);
             })        

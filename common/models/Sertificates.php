@@ -15,6 +15,7 @@ use Yii;
  * @property string|null $owner_name
  * @property int|null $vet_site_id
  * @property int|null $operator
+ * @property int $ownertype
  *
  * @property Employees $operator0
  * @property Organizations $organization
@@ -23,6 +24,7 @@ use Yii;
  */
 class Sertificates extends \yii\db\ActiveRecord
 {
+    public $ownertype;
     /**
      * {@inheritdoc}
      */
@@ -39,7 +41,7 @@ class Sertificates extends \yii\db\ActiveRecord
         return [
             [['sert_id'], 'required'],
             [['sert_date'], 'safe'],
-            [['organization_id', 'vet_site_id', 'operator'], 'integer'],
+            [['organization_id', 'vet_site_id', 'operator','ownertype'], 'integer'],
             [['sert_id', 'sert_num'], 'string', 'max' => 100],
             [['pnfl', 'owner_name'], 'string', 'max' => 255],
             [['sert_id'], 'unique'],
@@ -54,14 +56,15 @@ class Sertificates extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'sert_id' => Yii::t('model.sertificates', 'Kod'),
-            'sert_num' => Yii::t('model.sertificates', 'Raqami'),
+            'sert_id' => Yii::t('model.sertificates', 'Dalolatnoma'),
+            'sert_num' => Yii::t('model.sertificates', 'Dalolatnoma raqami(Qog\'ozdagi yoki registondagi)'),
             'sert_date' => Yii::t('model.sertificates', 'Sana'),
             'organization_id' => Yii::t('model.sertificates', 'Tashkilot'),
             'pnfl' => Yii::t('model.sertificates', 'PNFL'),
             'owner_name' => Yii::t('model.sertificates', 'Egasi'),
             'vet_site_id' => Yii::t('model.sertificates', 'Vet uchstka'),
             'operator' => Yii::t('model.sertificates', 'Operator'),
+            'ownertype' => Yii::t('model.sertificates', 'Kontragent turi'),
         ];
     }
 

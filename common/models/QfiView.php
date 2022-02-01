@@ -8,6 +8,7 @@ use Yii;
  * This is the model class for table "qfi_view".
  *
  * @property int $MHOBT_cod
+ * @property int|null $region_id
  * @property int|null $district_id
  * @property int|null $qfi_id
  * @property string|null $name_lot
@@ -34,7 +35,7 @@ class QfiView extends \yii\db\ActiveRecord
     {
         return [
             [['MHOBT_cod'], 'required'],
-            [['MHOBT_cod', 'district_id', 'qfi_id'], 'integer'],
+            [['MHOBT_cod', 'district_id','region_id', 'qfi_id'], 'integer'],
             [['name_lot', 'name_cyr', 'name_ru'], 'string', 'max' => 100],
             [['center_lot', 'center_cyr', 'center_ru'], 'string', 'max' => 50],
         ];
@@ -48,6 +49,7 @@ class QfiView extends \yii\db\ActiveRecord
         return [
             'MHOBT_cod' => Yii::t('model.qfiview', 'Mhobt Cod'),
             'district_id' => Yii::t('model.qfiview', 'District ID'),
+            'region_id' => Yii::t('model.qfiview', 'Region ID'),
             'qfi_id' => Yii::t('model.qfiview', 'Qfi ID'),
             'name_lot' => Yii::t('model.qfiview', 'Name Lot'),
             'center_lot' => Yii::t('model.qfiview', 'Center Lot'),

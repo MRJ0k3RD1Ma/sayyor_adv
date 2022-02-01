@@ -152,8 +152,8 @@ class VetSitesController extends Controller
         echo $res;
         exit;
     }
-    public function actionGetQfi($id){
-        $model = QfiView::find()->where(['district_id'=>$id])->all();
+    public function actionGetQfi($id,$regid){
+        $model = QfiView::find()->where(['district_id'=>$id,'region_id'=>$regid])->all();
         $text = Yii::t('cp.vetsites','- QFYni tanlang -');
         $res = "<option value=''>{$text}</option>";
         $lang = Yii::$app->language;
