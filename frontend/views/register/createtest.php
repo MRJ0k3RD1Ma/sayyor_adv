@@ -23,7 +23,7 @@ use yii\widgets\ActiveForm;
     ?>
     <?php $form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data']]); ?>
 
-    <?= $form->field($model, 'sert_id')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'sert_id')->textInput(['maxlength' => true,'disabled'=>true]) ?>
 
     <?= $form->field($model, 'sert_num')->textInput(['maxlength' => true]) ?>
 
@@ -32,8 +32,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'ownertype')->radioList([1=>Yii::t('reg','Jismoniy shaxs'),2=>Yii::t('reg','Yuridik shaxs')]) ?>
 
-    <div class="indiv">
-        <?= $form->field($ind, 'pnfl')->textInput(['maxlength' => true]) ?>
+    <div class="indiv" style="padding-left: 10px; border-left: 1px solid #f0f0f0;">
+
+        <?= $form->field($ind, 'pnfl')->textInput(['maxlength' => 14,'oninput'=>"this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');",'required'=>true]) ?>
 
         <?= $form->field($ind, 'name')->textInput(['maxlength' => true]) ?>
 
@@ -61,11 +62,11 @@ use yii\widgets\ActiveForm;
         <?= $form->field($ind, 'passport')->textInput(['maxlength' => true]) ?>
 
     </div>
+
+
     <?= $form->field($model, 'owner_name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'vet_site_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\VetSites::find()->all(),'id','name')) ?>
-
-    <?= $form->field($model, 'operator')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Employees::find()->all(),'id','name')) ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('cp.sertificates', 'Saqlash'), ['class' => 'btn btn-success']) ?>
@@ -80,6 +81,7 @@ use yii\widgets\ActiveForm;
 <?php
 $url_district = Yii::$app->urlManager->createUrl(['/register/get-district']);
 $url_qfi = Yii::$app->urlManager->createUrl(['/register/get-qfi']);
+$url_pnfl = Yii::$app->urlManager->createUrl(['/register/get-ind']);
 $this->registerJs("
         $('#individuals-region').change(function(){
             $.get('{$url_district}?id='+$('#individuals-region').val()).done(function(data){
@@ -88,11 +90,28 @@ $this->registerJs("
             })        
         })
         $('#individuals-district').change(function(){
-            alert('asdas');
-            $.get('{$url_qfi}?id='+$('#individuals-district').val()+'&regid='+$('#individuals-region')).done(function(data){
-                $('#individuals-soato').empty();
-                $('#individuals-soato').append(data);
+            $.get('{$url_qfi}?id='+$('#individuals-district').val()+'&regid='+$('#individuals-region').val()).done(function(data){
+                $('#individuals-soato_id').empty();
+                $('#individuals-soato_id').append(data);
             })        
+        })
+        
+        $('#sertificates-ownertype').change(function(){
+            if($('#sertificates-ownertype').val()==1){
+                   $('#individuals-pnfl').prop('required',true);
+            }else{
+                   $('#individuals-pnfl').prop('required','false');
+            }
+        })
+        
+        
+        $('#individuals-pnfl').keyup(function(){
+            if($('#individuals-pnfl').val().length == 14){
+                $.get('{$url_pnfl}?pnfl='+$('#individuals-pnfl').val()).done(function(data){
+                    data = JSON.parse(data);
+                    alert(data.code);
+                })
+            }
         })
     ")
 ?>

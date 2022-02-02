@@ -36,10 +36,11 @@ class Individuals extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['pnfl'], 'required'],
+//            [['pnfl'], 'required'],
             [['soato_id','region','district'], 'integer'],
             [['pnfl', 'name', 'surname', 'middlename', 'adress', 'passport'], 'string', 'max' => 255],
             [['pnfl'], 'unique'],
+            ['pnfl','string','length'=>14],
             [['soato_id'], 'exist', 'skipOnError' => true, 'targetClass' => Soato::className(), 'targetAttribute' => ['soato_id' => 'MHOBT_cod']],
         ];
     }

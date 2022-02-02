@@ -103,7 +103,36 @@ BackAsset::register($this);
 <div class="rightbar-overlay"></div>
 
 
+<?php
+if(Yii::$app->session->hasFlash('error')){
+    $txt = Yii::$app->session->getFlash('error');
+    $xato = Yii::t('reg','Xatolik');
+    $this->registerJs("
+        $(document).ready(function(){
+            Swal.fire({
+              icon: 'error',
+              title: \"{$xato}\",
+              text: \"{$txt}\"
+            })
+        })
+    ");
 
+}
+if(Yii::$app->session->hasFlash('success')){
+    $txt = Yii::$app->session->getFlash('success');
+    $xato = Yii::t('reg','Muvvofaqiyatli');
+    $this->registerJs("
+        $(document).ready(function(){
+            Swal.fire({
+              icon: 'error',
+              title: \"{$xato}\",
+              text: \"{$txt}\"
+            })
+        })
+    ");
+
+}
+?>
 
 
 <?php $this->endBody() ?>
