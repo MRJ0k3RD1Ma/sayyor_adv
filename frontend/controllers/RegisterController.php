@@ -11,6 +11,7 @@ use common\models\QfiView;
 use common\models\Samples;
 use common\models\Sertificates;
 use common\models\Vaccination;
+use frontend\models\search\SertificatesSearch;
 use yii\base\BaseObject;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -84,13 +85,14 @@ class RegisterController extends Controller
         }
         $code .= $num;
         $model = new Sertificates();
-        $model->sert_id = $code;
+        $model->sert_id = $num;
         $legal = new LegalEntities();
         $ind = new Individuals();
         $model->ownertype = 1;
         $model->organization_id = $org;
         $model->operator = $user_id;
         if($model->load(Yii::$app->request->post())){
+
             if($model->ownertype == 1 and $ind->load(Yii::$app->request->post())){
                 if($ind->pnfl and $ind->name and $ind->surname and $ind->middlename and $ind->soato_id){
                     if($withpnfl = Individuals::findOne(['pnfl'=>$ind->pnfl])){
@@ -107,6 +109,7 @@ class RegisterController extends Controller
                 }
             }
         }
+        $model->sert_id = $code;
         return $this->render('createtest',[
             'model'=>$model,
             'legal'=>$legal,
@@ -184,10 +187,19 @@ class RegisterController extends Controller
             return $this->redirect(['view','id'=>$sert_id]);
         }
         return $this->render('emlash',['model'=>$model,'animal'=>$animal]);
+
     }
 
 
+    public function actionIndextest(){
+        $searchModel = new SertificatesSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
 
+        return $this->render('indextest', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
 
     public function actionGetInd($pnfl){
         if($model = Individuals::findOne(['pnfl'=>$pnfl])){
