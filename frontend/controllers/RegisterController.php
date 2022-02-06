@@ -2,15 +2,21 @@
 
 namespace frontend\controllers;
 
+use common\models\Animals;
 use common\models\DistrictView;
+use common\models\Emlash;
 use common\models\Individuals;
 use common\models\LegalEntities;
 use common\models\QfiView;
+use common\models\Samples;
 use common\models\Sertificates;
+use common\models\Vaccination;
+use yii\base\BaseObject;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use Yii;
+use yii\web\NotFoundHttpException;
 
 /**
  * Site controller
@@ -87,10 +93,15 @@ class RegisterController extends Controller
         if($model->load(Yii::$app->request->post())){
             if($model->ownertype == 1 and $ind->load(Yii::$app->request->post())){
                 if($ind->pnfl and $ind->name and $ind->surname and $ind->middlename and $ind->soato_id){
+                    if($withpnfl = Individuals::findOne(['pnfl'=>$ind->pnfl])){
+                        $ind = $withpnfl;
+                        $ind->load(Yii::$app->request->post());
+                    }
                     $ind->save();
                     $model->pnfl = $ind->pnfl;
                     $model->save();
                     Yii::$app->session->setFlash('success','Ma\'lumotlar bazaga muvoffaqiyatli yozildi');
+                    return $this->redirect(['viewtest','id'=>$model->id]);
                 }else{
                     Yii::$app->session->setFlash('error',Yii::t('reg','Maydonlar to\'ldirilmagan'));
                 }
@@ -102,6 +113,81 @@ class RegisterController extends Controller
             'ind'=>$ind
         ]);
     }
+    public function actionViewtest($id)
+    {
+        return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+
+    public function actionAdd($id){
+        $model = $this->findModel($id);
+
+        $animal = new Animals();
+
+        $sample = new Samples();
+        $animal->pnfl = $model->pnfl;
+        $animal->inn = $model->organization->TIN;
+        $sample->animal_id = -1;
+        $sample->sert_id = intval($id);
+        if(Yii::$app->request->isPost){
+
+            if($animal->load(Yii::$app->request->post())){
+                $animal->inn = "{$animal->inn}";
+                if($animal->save()){}
+                if($sample->load(Yii::$app->request->post())){
+                    $sample->animal_id = $animal->id;
+                    $sample->sert_id = intval($id);
+                    if($sample->save(false)){
+                        return $this->redirect(['view','id'=>$id]);
+                    }
+                }
+            }
+            /*echo "<pre>";
+//            var_dump($animal);
+            echo "________________<br><br><hr>";
+            var_dump($sample);
+            exit;*/
+        }
+
+        return $this->render('add',[
+            'model'=>$model,
+            'animal'=>$animal,
+            'sample'=>$sample
+        ]);
+    }
+    protected function findModel($id)
+    {
+        if (($model = Sertificates::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException(Yii::t('cp.sertificates', 'The requested page does not exist.'));
+    }
+    public function actionVaccination($id,$sert_id){
+
+        $model = new Vaccination();
+        $model->animal_id = $id;
+        $animal = Animals::findOne($id);
+        if($model->load(Yii::$app->request->post()) and $model->save()){
+            return $this->redirect(['view','id'=>$sert_id]);
+        }
+        return $this->render('vaccination',['model'=>$model,'animal'=>$animal]);
+    }
+
+    public function actionEmlash($id,$sert_id){
+
+        $model = new Emlash();
+        $model->animal_id = $id;
+        $animal = Animals::findOne($id);
+        if($model->load(Yii::$app->request->post()) and $model->save()){
+            return $this->redirect(['view','id'=>$sert_id]);
+        }
+        return $this->render('emlash',['model'=>$model,'animal'=>$animal]);
+    }
+
+
+
 
     public function actionGetInd($pnfl){
         if($model = Individuals::findOne(['pnfl'=>$pnfl])){
@@ -114,7 +200,8 @@ class RegisterController extends Controller
                     \"region_id\":\"{$model->soato->region_id}\",
                     \"district_id\":\"{$model->soato->district_id}\",
                     \"soato_id\":\"{$model->soato_id}\",
-                    \"passport\":\"{$model->passport}\"
+                    \"passport\":\"{$model->passport}\",
+                    \"adress\":\"{$model->adress}\"
                 }
             }";
         }else{

@@ -109,7 +109,27 @@ $this->registerJs("
             if($('#individuals-pnfl').val().length == 14){
                 $.get('{$url_pnfl}?pnfl='+$('#individuals-pnfl').val()).done(function(data){
                     data = JSON.parse(data);
-                    alert(data.code);
+                    $('#individuals-name').val(data.value.name);
+                    $('#individuals-surname').val(data.value.surname);
+                    $('#individuals-middlename').val(data.value.middlename);
+                    $('#individuals-passport').val(data.value.passport);
+                    $('#individuals-adress').val(data.value.adress);
+                    
+                    $('#individuals-region').val(data.value.region_id).trigger('change');
+                    setInterval(function () {
+                       if($('#individuals-district').val()){clearInterval();}
+                       else{
+                        $('#individuals-district').val(data.value.district_id).trigger('change');
+                       }
+                    }, 500);
+                    setInterval(function () {
+                       if($('#individuals-soato_id').val()){clearInterval();}
+                       else{
+                        $('#individuals-soato_id').val(data.value.soato_id);
+                       }
+                    }, 500);
+                    
+                   
                 })
             }
         })
