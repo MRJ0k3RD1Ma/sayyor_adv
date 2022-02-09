@@ -11,6 +11,7 @@ use Yii;
  * @property string|null $sert_num Далолатнома рақами (коғоздаги ёки РЕГИСТОНдаги)
  * @property string|null $sert_date
  * @property int|null $organization_id Бу ерда асли стир бўлиши керак.
+ * @property string $inn
  * @property string $pnfl
  * @property string|null $owner_name
  * @property int|null $vet_site_id
@@ -43,7 +44,7 @@ class Sertificates extends \yii\db\ActiveRecord
             [['sert_date'], 'safe'],
             [['organization_id', 'vet_site_id', 'operator','ownertype'], 'integer'],
             [['sert_id', 'sert_num'], 'string', 'max' => 100],
-            [['pnfl', 'owner_name'], 'string', 'max' => 255],
+            [['pnfl', 'owner_name','inn'], 'string', 'max' => 255],
             [['sert_id'], 'unique'],
             [['operator'], 'exist', 'skipOnError' => true, 'targetClass' => Employees::className(), 'targetAttribute' => ['operator' => 'id']],
             [['organization_id'], 'exist', 'skipOnError' => true, 'targetClass' => Organizations::className(), 'targetAttribute' => ['organization_id' => 'id']],
@@ -65,6 +66,7 @@ class Sertificates extends \yii\db\ActiveRecord
             'vet_site_id' => Yii::t('model.sertificates', 'Vet uchstka'),
             'operator' => Yii::t('model.sertificates', 'Operator'),
             'ownertype' => Yii::t('model.sertificates', 'Kontragent turi'),
+            'inn' => Yii::t('model.sertificates', 'INN(STIR)'),
         ];
     }
 
@@ -106,5 +108,8 @@ class Sertificates extends \yii\db\ActiveRecord
     public function getVetSite()
     {
         return $this->hasOne(VetSites::className(), ['id' => 'vet_site_id']);
+    }
+    public function getInn0(){
+        return $this->hasOne(LegalEntities::className(),['inn'=>'inn']);
     }
 }

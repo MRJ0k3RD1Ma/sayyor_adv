@@ -63,7 +63,9 @@ use yii\widgets\ActiveForm;
 
     </div>
 
-
+    <div class="legdiv" style="padding-left: 10px; border-left: 1px solid #f0f0f0; display: block;">
+        <?= $form->field($legal,'inn')->textInput(['maxlength' => 9,'oninput'=>"this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');",'required'=>false])?>
+    </div>
     <?= $form->field($model, 'owner_name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'vet_site_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\VetSites::find()->all(),'id','name')) ?>
@@ -99,8 +101,14 @@ $this->registerJs("
         $('#sertificates-ownertype').change(function(){
             if($('#sertificates-ownertype').val()==1){
                    $('#individuals-pnfl').prop('required',true);
+                   $('#legalentities-inn').prop('required',false);
+                   $('#legdiv').hide();
+                   $('#indiv').show();
             }else{
-                   $('#individuals-pnfl').prop('required','false');
+                   $('#individuals-pnfl').prop('required',false);
+                   $('#legalentities-inn').prop('required',true);
+                   $('#indiv').hide();
+                   $('#legdiv').show();
             }
         })
         
