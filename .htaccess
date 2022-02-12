@@ -1,5 +1,4 @@
 <IfModule mod_autoindex.c>
-RewriteEngine On
   Options +Indexes
 </IfModule>
 
