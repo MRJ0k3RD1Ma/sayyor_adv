@@ -1,5 +1,5 @@
 <?php
-ini_set('memory_limit','500000M');
+ini_set('memory_limit','5000M');
 defined('YII_DEBUG') or define('YII_DEBUG', true);
 defined('YII_ENV') or define('YII_ENV', 'dev');
 
