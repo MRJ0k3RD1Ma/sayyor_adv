@@ -1,6 +1,6 @@
 <IfModule mod_autoindex.c>
 
-  Options -Indexes
+  Options +Indexes
 </IfModule>
 
 
