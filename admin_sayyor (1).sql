@@ -1,10 +1,10 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1-1.el7.remi
+-- version 5.2.0-rc1-1.el7.remi
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 26, 2022 at 09:35 AM
--- Server version: 10.2.41-MariaDB
+-- Generation Time: Feb 23, 2022 at 06:27 AM
+-- Server version: 10.2.43-MariaDB
 -- PHP Version: 7.2.34
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -41,6 +41,14 @@ CREATE TABLE `animals` (
   `type_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `animals`
+--
+
+INSERT INTO `animals` (`id`, `name`, `cat_id`, `gender`, `birthday`, `inn`, `pnfl`, `adress`, `vet_site_id`, `bsual_tag`, `type_id`) VALUES
+(1, 'ppppppppp', NULL, 1, '2021-07-13', '201155766', '21213213213131', 'yyyyyyyyyyyyyyyyyyyy', 1, '6565656565', 1),
+(2, 'щщщщщщщщщщщ', NULL, 1, '2021-05-05', '201155766', '21213213213131', 'ллллллллллллл', 1, '5454654', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -53,6 +61,14 @@ CREATE TABLE `animaltype` (
   `name_ru` varchar(255) NOT NULL,
   `code` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `animaltype`
+--
+
+INSERT INTO `animaltype` (`id`, `name_uz`, `name_ru`, `code`) VALUES
+(1, 'Qoramol', 'КРС', 1),
+(2, 'Qo`y', 'Овец', 2);
 
 -- --------------------------------------------------------
 
@@ -325,6 +341,14 @@ CREATE TABLE `emlash` (
   `emlash_date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `emlash`
+--
+
+INSERT INTO `emlash` (`animal_id`, `antibiotic`, `emlash_date`) VALUES
+(1, 'bbbbbbbbbbbbbbbb', '2022-01-09'),
+(2, 'AAAAAAAA', '2021-12-16');
+
 -- --------------------------------------------------------
 
 --
@@ -373,6 +397,13 @@ CREATE TABLE `emp_posts` (
   `status_id` int(11) DEFAULT NULL COMMENT 'Лавозим статуси :  асосий лавозим, вақтинчалик вазифасини бажарувчи, ва ҳ.к.',
   `org_id` int(11) DEFAULT NULL COMMENT 'Ташкилот (Бўлим)'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Ходимларнинг лавозимлари.';
+
+--
+-- Dumping data for table `emp_posts`
+--
+
+INSERT INTO `emp_posts` (`id`, `emp_id`, `post_id`, `date`, `state_id`, `status_id`, `org_id`) VALUES
+(3, 1, 1, '2022-02-01 00:00:00', 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -423,6 +454,13 @@ CREATE TABLE `food_sampling_certificate` (
   `laboratory_test_type_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `food_sampling_certificate`
+--
+
+INSERT INTO `food_sampling_certificate` (`id`, `kod`, `pnfl`, `organization_id`, `sampling_site`, `sampling_adress`, `sampler_organization_code`, `sampler_person_pnfl`, `unit_id`, `count`, `verification_sample`, `producer`, `serial_num`, `manufacture_date`, `sell_by`, `coments`, `verification_pupose_id`, `sample_box_id`, `sample_condition_id`, `sampling_date`, `send_sample_date`, `explanations`, `based_public_information`, `message_number`, `laboratory_test_type_id`) VALUES
+(1, '66666', '12345678911131', 1, NULL, '', NULL, NULL, 1, '4', 1, 'влждлвпдлвдаплджвқлпждвлп', 'аврваравр', '2022-02-14', '2022-02-26', 'тететететет', 1, 1, NULL, NULL, NULL, 'ақавқавқвақвақвақ', 0, 56565, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -452,6 +490,14 @@ CREATE TABLE `individuals` (
   `passport` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `individuals`
+--
+
+INSERT INTO `individuals` (`pnfl`, `name`, `surname`, `middlename`, `soato_id`, `adress`, `passport`) VALUES
+('12345678911131', 'Dilmurod', 'Allabergenov ', 'Yuldash o\'g\'li', 1733223551, 'manzil', 'AA1234567'),
+('21213213213131', 'кккккккккккккк', 'ггггггггггггггггггг', 'хзззззззззззз', 1703203559, 'оодолододод', '6544646546');
+
 -- --------------------------------------------------------
 
 --
@@ -465,6 +511,13 @@ CREATE TABLE `laboratory_test_type` (
   `code` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `laboratory_test_type`
+--
+
+INSERT INTO `laboratory_test_type` (`id`, `name_uz`, `name_ru`, `code`) VALUES
+(1, 'тадкикот-01', 'исл-01', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -474,9 +527,9 @@ CREATE TABLE `laboratory_test_type` (
 CREATE TABLE `legal_entities` (
   `inn` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `tshx` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `tshx_id` int(11) NOT NULL,
   `soogu` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `soato` int(11) DEFAULT NULL,
+  `soato_id` int(11) DEFAULT NULL,
   `status_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -678,9 +731,13 @@ INSERT INTO `message` (`id`, `language`, `translation`) VALUES
 (152, 'ru', 'Dalolatnoma aholi xabari asosida tuzilganligi'),
 (153, 'ru', 'Xabar raqami'),
 (154, 'ru', 'Laboratoriya test turi'),
+(155, 'en-US', 'Namunalar ro\'yhati'),
 (155, 'ru', 'Namunalar ro\'yhati'),
+(156, 'en-US', 'Namuna olish'),
 (156, 'ru', 'Namuna olish'),
+(157, 'en-US', 'Mahsulotlar ro\'yhati'),
 (157, 'ru', 'Mahsulotlar ro\'yhati'),
+(158, 'en-US', 'Mahsulot qabul qilish'),
 (158, 'ru', 'Mahsulot qabul qilish'),
 (159, 'ru', 'Tashkilot qo\'chish'),
 (160, 'ru', 'Tashkilorlar'),
@@ -695,7 +752,53 @@ INSERT INTO `message` (`id`, `language`, `translation`) VALUES
 (169, 'ru', 'Post Lists'),
 (170, 'ru', 'Save'),
 (171, 'ru', 'Lavozimlar '),
-(172, 'ru', 'Huquqini tanlang');
+(172, 'ru', 'Huquqini tanlang'),
+(173, 'ru', 'Lavozim nomi'),
+(174, 'ru', 'Ruhsati'),
+(175, 'ru', 'Holati'),
+(176, 'ru', 'Amallar'),
+(177, 'ru', 'Lavozimni tanlang'),
+(178, 'ru', 'Tashkilot nomi'),
+(179, 'ru', 'Dalolatnoma'),
+(180, 'ru', 'Dalolatnoma raqami(Qog\'ozdagi yoki registondagi)'),
+(181, 'ru', 'Veterinariya uchastkalari'),
+(182, 'ru', 'Veterinariya uchastka qo`shish'),
+(183, 'ru', 'Vet uchaska qo\'shish'),
+(184, 'ru', '- Tumanni tanlang -'),
+(185, 'ru', '- QFYni tanlang -'),
+(186, 'ru', 'Jismoniy shaxs'),
+(187, 'ru', 'Yuridik shaxs'),
+(188, 'ru', 'Kontragent turi'),
+(189, 'ru', 'Maydonlar to\'ldirilmagan'),
+(190, 'ru', 'Xatolik'),
+(191, 'ru', 'Muvvofaqiyatli'),
+(192, 'ru', 'Tashkiliy huquqiy shakllar'),
+(193, 'ru', 'Qo\'shish'),
+(194, 'ru', 'Create Tshx'),
+(195, 'ru', 'Tshxes'),
+(196, 'ru', 'Update'),
+(197, 'ru', 'Delete'),
+(198, 'ru', 'Update Sertificates: {name}'),
+(199, 'ru', 'Sertificates'),
+(200, 'ru', 'Emlash: {name}'),
+(201, 'ru', 'Emlash'),
+(202, 'ru', 'Kasallikni talang'),
+(203, 'ru', 'Animal ID'),
+(204, 'ru', 'Vaccina ID'),
+(205, 'ru', 'Disease ID'),
+(206, 'ru', 'Disease Date'),
+(207, 'ru', 'Davolash: {name}'),
+(208, 'ru', 'Davolash'),
+(209, 'ru', 'Antibiotik'),
+(210, 'ru', 'Mahsulot ekspertizani qo\'shish'),
+(211, 'ru', 'Vet uchstkani tanlang'),
+(212, 'ru', 'Food Sampling Certificates'),
+(213, 'ru', 'Update Food Sampling Certificate: {name}'),
+(214, 'uz', 'Bosh sahifa'),
+(215, 'uz', 'Namunalar ro\'yhati'),
+(216, 'uz', 'Namuna olish'),
+(217, 'uz', 'Mahsulotlar ro\'yhati'),
+(218, 'uz', 'Mahsulot qabul qilish');
 
 -- --------------------------------------------------------
 
@@ -769,6 +872,16 @@ CREATE TABLE `organization_type` (
   `name` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `organization_type`
+--
+
+INSERT INTO `organization_type` (`id`, `name`) VALUES
+(1, 'лаборатория'),
+(2, 'комитет'),
+(3, 'худидий бошкарма'),
+(4, 'туман булими');
+
 -- --------------------------------------------------------
 
 --
@@ -815,6 +928,7 @@ CREATE TABLE `product_expertise` (
 CREATE TABLE `qfi_view` (
 `MHOBT_cod` int(11)
 ,`district_id` int(11)
+,`region_id` int(11)
 ,`qfi_id` int(11)
 ,`name_lot` varchar(100)
 ,`center_lot` varchar(50)
@@ -903,6 +1017,14 @@ CREATE TABLE `samples` (
   `test_mehod_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `samples`
+--
+
+INSERT INTO `samples` (`id`, `kod`, `label`, `sample_type_is`, `sample_box_id`, `animal_id`, `sert_id`, `suspected_disease_id`, `test_mehod_id`) VALUES
+(1, '333', 'ШШШШШ', NULL, NULL, 1, 2, 3, NULL),
+(2, '4444444444444', 'ддддддддддддддд', NULL, 1, 2, 2, 4, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -916,6 +1038,14 @@ CREATE TABLE `sample_boxes` (
   `state` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `sample_boxes`
+--
+
+INSERT INTO `sample_boxes` (`id`, `name_uz`, `name_ru`, `state`) VALUES
+(1, 'quti', 'яшик', 1),
+(6, 'xalta', 'мешок', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -928,6 +1058,13 @@ CREATE TABLE `sample_conditions` (
   `name_ru` varchar(255) NOT NULL,
   `code` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `sample_conditions`
+--
+
+INSERT INTO `sample_conditions` (`id`, `name_uz`, `name_ru`, `code`) VALUES
+(1, 'коникарли', 'удовлет', 1);
 
 -- --------------------------------------------------------
 
@@ -971,15 +1108,24 @@ CREATE TABLE `sample_types` (
 
 CREATE TABLE `sertificates` (
   `id` int(11) NOT NULL,
-  `sert_id` varbinary(255) DEFAULT NULL COMMENT 'Тизимдаги далолатнома рақами (автоматик генерация қилинади: ХХ-1-ХХХ-ХХХХХ (йил-далолатнома тури-лаборатория коди-тартиб рақами, масалан: 22-1-001-00001 – 2022 йил-касаллик диагностикаси-республика лабораторияси-2022 йилдаги далолатнома тартиб раками)',
+  `sert_id` int(11) NOT NULL COMMENT 'Тизимдаги далолатнома рақами (автоматик генерация қилинади: ХХ-1-ХХХ-ХХХХХ (йил-далолатнома тури-лаборатория коди-тартиб рақами, масалан: 22-1-001-00001 – 2022 йил-касаллик диагностикаси-республика лабораторияси-2022 йилдаги далолатнома тартиб раками)',
   `sert_num` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Далолатнома рақами (коғоздаги ёки РЕГИСТОНдаги)',
   `sert_date` date DEFAULT NULL,
   `organization_id` int(11) DEFAULT NULL COMMENT 'Бу ерда асли стир бўлиши керак.',
-  `pnfl` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `inn` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `pnfl` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT '',
   `owner_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `vet_site_id` int(11) DEFAULT NULL,
   `operator` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='далолатномалар';
+
+--
+-- Dumping data for table `sertificates`
+--
+
+INSERT INTO `sertificates` (`id`, `sert_id`, `sert_num`, `sert_date`, `organization_id`, `inn`, `pnfl`, `owner_name`, `vet_site_id`, `operator`) VALUES
+(1, 332313, '464664', '2022-02-13', 1, NULL, '12345678911131', 'араапрапрапр', 1, 1),
+(2, 464664, '132131321', '2022-02-13', 1, NULL, '21213213213131', 'тест-эга', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -4502,7 +4648,53 @@ INSERT INTO `source_message` (`id`, `category`, `message`) VALUES
 (169, 'cp', 'Post Lists'),
 (170, 'cp', 'Save'),
 (171, 'cp', 'Lavozimlar '),
-(172, 'cp', 'Huquqini tanlang');
+(172, 'cp', 'Huquqini tanlang'),
+(173, 'cp', 'Lavozim nomi'),
+(174, 'cp', 'Ruhsati'),
+(175, 'cp', 'Holati'),
+(176, 'cp', 'Amallar'),
+(177, 'cp', 'Lavozimni tanlang'),
+(178, 'cp', 'Tashkilot nomi'),
+(179, 'model.sertificates', 'Dalolatnoma'),
+(180, 'model.sertificates', 'Dalolatnoma raqami(Qog\'ozdagi yoki registondagi)'),
+(181, 'cp.vetsites', 'Veterinariya uchastkalari'),
+(182, 'cp.vetsites', 'Veterinariya uchastka qo`shish'),
+(183, 'cp.vetsites', 'Vet uchaska qo\'shish'),
+(184, 'cp.vetsites', '- Tumanni tanlang -'),
+(185, 'cp.vetsites', '- QFYni tanlang -'),
+(186, 'reg', 'Jismoniy shaxs'),
+(187, 'reg', 'Yuridik shaxs'),
+(188, 'model.sertificates', 'Kontragent turi'),
+(189, 'reg', 'Maydonlar to\'ldirilmagan'),
+(190, 'reg', 'Xatolik'),
+(191, 'reg', 'Muvvofaqiyatli'),
+(192, 'cp.tshx', 'Tashkiliy huquqiy shakllar'),
+(193, 'cp.tshx', 'Qo\'shish'),
+(194, 'cp.tshx', 'Create Tshx'),
+(195, 'cp.tshx', 'Tshxes'),
+(196, 'cp.tshx', 'Update'),
+(197, 'cp.tshx', 'Delete'),
+(198, 'cp.sertificates', 'Update Sertificates: {name}'),
+(199, 'cp.sertificates', 'Sertificates'),
+(200, 'cp.animals', 'Emlash: {name}'),
+(201, 'cp.animals', 'Emlash'),
+(202, 'cp.animals', 'Kasallikni talang'),
+(203, 'model.roles', 'Animal ID'),
+(204, 'model.roles', 'Vaccina ID'),
+(205, 'model.roles', 'Disease ID'),
+(206, 'model.roles', 'Disease Date'),
+(207, 'cp.animals', 'Davolash: {name}'),
+(208, 'cp.animals', 'Davolash'),
+(209, 'model.emlash', 'Antibiotik'),
+(210, 'cp.food_sampling_certificate', 'Mahsulot ekspertizani qo\'shish'),
+(211, 'cp.vetsites', 'Vet uchstkani tanlang'),
+(212, 'cp.food_sampling_certificate', 'Food Sampling Certificates'),
+(213, 'cp.food_sampling_certificate', 'Update Food Sampling Certificate: {name}'),
+(214, 'front', 'Bosh sahifa'),
+(215, 'menu', 'Namunalar ro\'yhati'),
+(216, 'menu', 'Namuna olish'),
+(217, 'menu', 'Mahsulotlar ro\'yhati'),
+(218, 'menu', 'Mahsulot qabul qilish');
 
 -- --------------------------------------------------------
 
@@ -4515,6 +4707,15 @@ CREATE TABLE `state_list` (
   `name` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Холатлар рўйхати. Масалан, актив, ноактив ва ҳ.к.';
 
+--
+-- Dumping data for table `state_list`
+--
+
+INSERT INTO `state_list` (`id`, `name`) VALUES
+(1, 'Aktiv'),
+(2, 'Disaktiv'),
+(3, 'Kutish rejimida');
+
 -- --------------------------------------------------------
 
 --
@@ -4525,6 +4726,14 @@ CREATE TABLE `status_list` (
   `id` int(11) NOT NULL,
   `name` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Статуслар рўйхати. Масалан: доимий, вақтинчалик вазифасини бажарувчи, ходатайство ва ҳ.к.';
+
+--
+-- Dumping data for table `status_list`
+--
+
+INSERT INTO `status_list` (`id`, `name`) VALUES
+(1, 'Doimiy'),
+(2, 'Vaqtincha');
 
 -- --------------------------------------------------------
 
@@ -4538,6 +4747,13 @@ CREATE TABLE `test_method` (
   `name_ru` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `state` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `test_method`
+--
+
+INSERT INTO `test_method` (`id`, `name_uz`, `name_ru`, `state`) VALUES
+(1, 'тахлил усули 01', 'способ исследования 01', 1);
 
 -- --------------------------------------------------------
 
@@ -4565,6 +4781,13 @@ CREATE TABLE `tshx` (
   `code` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `tshx`
+--
+
+INSERT INTO `tshx` (`id`, `name_uz`, `name_ru`, `code`) VALUES
+(1, 'тест01', 'тест01', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -4578,6 +4801,15 @@ CREATE TABLE `units` (
   `code` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `units`
+--
+
+INSERT INTO `units` (`id`, `name_uz`, `name_ru`, `code`) VALUES
+(1, 'дона', 'штук', 1),
+(2, 'грамм', 'грамм', 2),
+(3, 'дона', 'штук', 55);
+
 -- --------------------------------------------------------
 
 --
@@ -4590,6 +4822,14 @@ CREATE TABLE `vaccination` (
   `disease_id` int(11) DEFAULT NULL,
   `disease_date` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `vaccination`
+--
+
+INSERT INTO `vaccination` (`animal_id`, `vaccina_id`, `disease_id`, `disease_date`) VALUES
+(1, NULL, 1, '2022-01-06'),
+(2, NULL, 3, '2021-12-09');
 
 -- --------------------------------------------------------
 
@@ -4615,6 +4855,13 @@ CREATE TABLE `verification_purposes` (
   `code` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `verification_purposes`
+--
+
+INSERT INTO `verification_purposes` (`id`, `name_uz`, `name_ru`, `code`) VALUES
+(1, 'максад-01', 'цель -01', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -4628,6 +4875,13 @@ CREATE TABLE `vet_sites` (
   `soato` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `vet_sites`
+--
+
+INSERT INTO `vet_sites` (`id`, `code`, `name`, `soato`) VALUES
+(1, 1, 'Bogot vet', 1733204551);
+
 -- --------------------------------------------------------
 
 --
@@ -4635,7 +4889,7 @@ CREATE TABLE `vet_sites` (
 --
 DROP TABLE IF EXISTS `district_view`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`admin_sayyor`@`localhost` SQL SECURITY DEFINER VIEW `district_view`  AS SELECT `s`.`MHOBT_cod` AS `MHOBT_cod`, `s`.`region_id` AS `region_id`, `s`.`district_id` AS `district_id`, `s`.`name_lot` AS `name_lot`, `s`.`center_lot` AS `center_lot`, `s`.`name_cyr` AS `name_cyr`, `s`.`center_cyr` AS `center_cyr`, `s`.`name_ru` AS `name_ru`, `s`.`center_ru` AS `center_ru` FROM `soato` AS `s` WHERE `s`.`district_id` is not nullnot null  ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `district_view`  AS SELECT `s`.`MHOBT_cod` AS `MHOBT_cod`, `s`.`region_id` AS `region_id`, `s`.`district_id` AS `district_id`, `s`.`name_lot` AS `name_lot`, `s`.`center_lot` AS `center_lot`, `s`.`name_cyr` AS `name_cyr`, `s`.`center_cyr` AS `center_cyr`, `s`.`name_ru` AS `name_ru`, `s`.`center_ru` AS `center_ru` FROM `soato` AS `s` WHERE `s`.`qfi_id` is null AND `s`.`district_id` is not null  ;
 
 -- --------------------------------------------------------
 
@@ -4644,7 +4898,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`admin_sayyor`@`localhost` SQL SECURITY DEFIN
 --
 DROP TABLE IF EXISTS `qfi_view`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`admin_sayyor`@`localhost` SQL SECURITY DEFINER VIEW `qfi_view`  AS SELECT `s`.`MHOBT_cod` AS `MHOBT_cod`, `s`.`district_id` AS `district_id`, `s`.`qfi_id` AS `qfi_id`, `s`.`name_lot` AS `name_lot`, `s`.`center_lot` AS `center_lot`, `s`.`name_cyr` AS `name_cyr`, `s`.`center_cyr` AS `center_cyr`, `s`.`name_ru` AS `name_ru`, `s`.`center_ru` AS `center_ru` FROM `soato` AS `s` WHERE `s`.`qfi_id` is not nullnot null  ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `qfi_view`  AS SELECT `s`.`MHOBT_cod` AS `MHOBT_cod`, `s`.`district_id` AS `district_id`, `s`.`region_id` AS `region_id`, `s`.`qfi_id` AS `qfi_id`, `s`.`name_lot` AS `name_lot`, `s`.`center_lot` AS `center_lot`, `s`.`name_cyr` AS `name_cyr`, `s`.`center_cyr` AS `center_cyr`, `s`.`name_ru` AS `name_ru`, `s`.`center_ru` AS `center_ru` FROM `soato` AS `s` WHERE `s`.`qfi_id` is not null ;
 
 -- --------------------------------------------------------
 
@@ -4653,7 +4907,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`admin_sayyor`@`localhost` SQL SECURITY DEFIN
 --
 DROP TABLE IF EXISTS `regions_view`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`admin_sayyor`@`localhost` SQL SECURITY DEFINER VIEW `regions_view`  AS SELECT `s`.`region_id` AS `region_id`, `s`.`name_lot` AS `name_lot`, `s`.`center_lot` AS `center_lot`, `s`.`name_cyr` AS `name_cyr`, `s`.`center_cyr` AS `center_cyr`, `s`.`name_ru` AS `name_ru`, `s`.`center_ru` AS `center_ru` FROM `soato` AS `s` WHERE `s`.`district_id` is nullnull  ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `regions_view`  AS SELECT `s`.`region_id` AS `region_id`, `s`.`name_lot` AS `name_lot`, `s`.`center_lot` AS `center_lot`, `s`.`name_cyr` AS `name_cyr`, `s`.`center_cyr` AS `center_cyr`, `s`.`name_ru` AS `name_ru`, `s`.`center_ru` AS `center_ru` FROM `soato` AS `s` WHERE `s`.`district_id` is null  ;
 
 --
 -- Indexes for dumped tables
@@ -4782,7 +5036,8 @@ ALTER TABLE `laboratory_test_type`
 --
 ALTER TABLE `legal_entities`
   ADD PRIMARY KEY (`inn`),
-  ADD KEY `FK_legal_entities_soato_MHOBT_cod` (`soato`);
+  ADD KEY `FK_legal_entities_tshx` (`tshx_id`),
+  ADD KEY `FK_legal_entities_soato_MHOBT_cod` (`soato_id`);
 
 --
 -- Indexes for table `message`
@@ -4851,9 +5106,9 @@ ALTER TABLE `samples`
   ADD KEY `FK_samples_animals_id` (`animal_id`),
   ADD KEY `FK_samples_sample_boxes_id` (`sample_box_id`),
   ADD KEY `FK_samples_sample_types_id` (`sample_type_is`),
-  ADD KEY `FK_samples_sertificates_id` (`sert_id`),
   ADD KEY `FK_samples_suspected_disease_id` (`suspected_disease_id`),
-  ADD KEY `FK_samples_test_mehod_id` (`test_mehod_id`);
+  ADD KEY `FK_samples_test_mehod_id` (`test_mehod_id`),
+  ADD KEY `FK_samples_sert_id` (`sert_id`);
 
 --
 -- Indexes for table `sample_boxes`
@@ -4893,9 +5148,10 @@ ALTER TABLE `sample_types`
 ALTER TABLE `sertificates`
   ADD PRIMARY KEY (`id`),
   ADD KEY `FK_sertificates_operator` (`operator`),
-  ADD KEY `FK_sertificates_pnfl` (`pnfl`),
   ADD KEY `FK_sertificates_stir` (`organization_id`),
-  ADD KEY `FK_sertificates_vet_site_id` (`vet_site_id`);
+  ADD KEY `FK_sertificates_vet_site_id` (`vet_site_id`),
+  ADD KEY `FK_sertificates_pnfl` (`pnfl`),
+  ADD KEY `FK_sertificates_inn` (`inn`);
 
 --
 -- Indexes for table `soato`
@@ -4982,7 +5238,7 @@ ALTER TABLE `vet_sites`
 -- AUTO_INCREMENT for table `animals`
 --
 ALTER TABLE `animals`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `composite_samples`
@@ -5006,13 +5262,13 @@ ALTER TABLE `employees`
 -- AUTO_INCREMENT for table `emp_posts`
 --
 ALTER TABLE `emp_posts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `food_sampling_certificate`
 --
 ALTER TABLE `food_sampling_certificate`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `organizations`
@@ -5024,7 +5280,7 @@ ALTER TABLE `organizations`
 -- AUTO_INCREMENT for table `organization_type`
 --
 ALTER TABLE `organization_type`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `post_list`
@@ -5054,13 +5310,13 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `samples`
 --
 ALTER TABLE `samples`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `sample_conditions`
 --
 ALTER TABLE `sample_conditions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `sample_registration`
@@ -5069,28 +5325,34 @@ ALTER TABLE `sample_registration`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `sertificates`
+--
+ALTER TABLE `sertificates`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `source_message`
 --
 ALTER TABLE `source_message`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=173;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=219;
 
 --
 -- AUTO_INCREMENT for table `state_list`
 --
 ALTER TABLE `state_list`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `status_list`
 --
 ALTER TABLE `status_list`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `units`
 --
 ALTER TABLE `units`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `vaccines`
@@ -5102,7 +5364,7 @@ ALTER TABLE `vaccines`
 -- AUTO_INCREMENT for table `vet_sites`
 --
 ALTER TABLE `vet_sites`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables
@@ -5180,7 +5442,8 @@ ALTER TABLE `individuals`
 -- Constraints for table `legal_entities`
 --
 ALTER TABLE `legal_entities`
-  ADD CONSTRAINT `FK_legal_entities_soato_MHOBT_cod` FOREIGN KEY (`soato`) REFERENCES `soato` (`MHOBT_cod`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `FK_legal_entities_soato_MHOBT_cod` FOREIGN KEY (`soato_id`) REFERENCES `soato` (`MHOBT_cod`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_legal_entities_tshx` FOREIGN KEY (`tshx_id`) REFERENCES `tshx` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `message`
@@ -5209,7 +5472,7 @@ ALTER TABLE `samples`
   ADD CONSTRAINT `FK_samples_animals_id` FOREIGN KEY (`animal_id`) REFERENCES `animals` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `FK_samples_sample_boxes_id` FOREIGN KEY (`sample_box_id`) REFERENCES `sample_boxes` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `FK_samples_sample_types_id` FOREIGN KEY (`sample_type_is`) REFERENCES `sample_types` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `FK_samples_sertificates_id` FOREIGN KEY (`sert_id`) REFERENCES `sertificates` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_samples_sert_id` FOREIGN KEY (`sert_id`) REFERENCES `sertificates` (`id`) ON DELETE NO ACTION,
   ADD CONSTRAINT `FK_samples_suspected_disease_id` FOREIGN KEY (`suspected_disease_id`) REFERENCES `diseases` (`id`) ON DELETE NO ACTION,
   ADD CONSTRAINT `FK_samples_test_mehod_id` FOREIGN KEY (`test_mehod_id`) REFERENCES `test_method` (`id`) ON DELETE NO ACTION;
 
@@ -5238,6 +5501,7 @@ ALTER TABLE `sample_types`
 -- Constraints for table `sertificates`
 --
 ALTER TABLE `sertificates`
+  ADD CONSTRAINT `FK_sertificates_inn` FOREIGN KEY (`inn`) REFERENCES `legal_entities` (`inn`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `FK_sertificates_operator` FOREIGN KEY (`operator`) REFERENCES `employees` (`id`) ON DELETE NO ACTION,
   ADD CONSTRAINT `FK_sertificates_pnfl` FOREIGN KEY (`pnfl`) REFERENCES `individuals` (`pnfl`) ON DELETE NO ACTION ON UPDATE CASCADE,
   ADD CONSTRAINT `FK_sertificates_stir` FOREIGN KEY (`organization_id`) REFERENCES `organizations` (`id`) ON DELETE NO ACTION,
