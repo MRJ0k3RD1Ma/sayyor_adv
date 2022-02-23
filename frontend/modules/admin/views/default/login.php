@@ -1,7 +1,7 @@
 <?php
 use yii\widgets\ActiveForm;
 $this->title = Yii::t('login',"Tizimga kirish");
-/* @var $model \app\models\LoginForm*/
+/* @var $model \common\models\LoginForm*/
 ?>
 
 <div class="login-page">

@@ -28,7 +28,6 @@ return [
             'identityClass' => 'common\models\Employees',
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
-            'loginUrl'=>['/cp/default/login'],
         ],
         'i18n' => [
             'translations' => [
