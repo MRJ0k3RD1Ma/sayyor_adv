@@ -109,7 +109,19 @@ class SiteController extends Controller
 
     public function actionAnimal(){
         $model = new Sertificates();
-        $ind = new Individuals();
+        if(Yii::$app->session->get('doc_type')=='pnfl'){
+            if($ind = Individuals::find()->where(['pnfl'=>Yii::$app->session->get('doc_pnfl')])->andWhere(['passport'=>Yii::$app->session->get('doc_document')])->one()){
+                $model->pnfl = $ind->pnfl;
+                $model->owner_name = $ind->surname.' '.$ind->name.' '.$ind->middlename;
+            }else{
+                return $this->redirect('logout');
+            }
+        }
+        if($model->load(Yii::$app->request->post())){
+            echo "<pre>";
+            var_dump($model);
+            exit;
+        }
         return $this->render('animal',['model'=>$model,'ind'=>$ind]);
     }
 

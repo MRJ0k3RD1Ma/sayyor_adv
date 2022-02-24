@@ -23,18 +23,18 @@ use yii\widgets\ActiveForm;
         ?>
         <?php $form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data']]); ?>
 
-        <?= $form->field($model, 'sert_id')->textInput(['maxlength' => true,'disabled'=>true]) ?>
-
-        <?= $form->field($model, 'sert_num')->textInput(['maxlength' => true]) ?>
-
-        <?= $form->field($model, 'sert_date')->textInput(['type'=>'date']) ?>
-
-
-        <?= $form->field($model, 'ownertype')->radioList([1=>Yii::t('reg','Jismoniy shaxs'),2=>Yii::t('reg','Yuridik shaxs')]) ?>
-
         <?= $form->field($model, 'owner_name')->textInput(['maxlength' => true]) ?>
 
         <?= $form->field($model, 'vet_site_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\VetSites::find()->all(),'id','name')) ?>
+
+        <?php
+            $data = [];
+            foreach (\common\models\Organizations::find()->all() as $item){
+                $data[$item->id] = $item->TIN.'-'.$item->NAME_FULL;
+            }
+        ?>
+
+        <?= $form->field($model, 'organization_id')->dropDownList($data,['prompt'=>'Tashkilotni tanlang']) ?>
 
         <div class="form-group">
             <?= Html::submitButton(Yii::t('cp.sertificates', 'Saqlash'), ['class' => 'btn btn-success']) ?>

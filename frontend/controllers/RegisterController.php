@@ -83,11 +83,11 @@ class RegisterController extends Controller
         if($num==0){
             $num = 1;
         }else{
-            $num++;
+            $num = $num+1;
         }
         $code .= $num;
         $model = new Sertificates();
-        $model->sert_id = $num;
+        $model->sert_id = $code;
         $legal = new LegalEntities();
         $ind = new Individuals();
         $model->ownertype = 1;
