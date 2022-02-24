@@ -3,6 +3,11 @@
 namespace client\controllers;
 
 use client\models\InnForm;
+use common\models\DistrictView;
+use common\models\Individuals;
+use common\models\LegalEntities;
+use common\models\QfiView;
+use common\models\Sertificates;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
@@ -102,6 +107,11 @@ class SiteController extends Controller
         return $this->render('create');
     }
 
+    public function actionAnimal(){
+        $model = new Sertificates();
+        $ind = new Individuals();
+        return $this->render('animal',['model'=>$model,'ind'=>$ind]);
+    }
 
     /**
      * Logs in a user.
@@ -112,23 +122,91 @@ class SiteController extends Controller
     {
         $model = new InnForm();
         $this->layout = "login";
+        $ind = new Individuals();
+        $legal = new LegalEntities();
         if($model->load(Yii::$app->request->post())){
             if($model->type == 'inn'){
+                if($legal->load(Yii::$app->request->post())){
+                    // legal save yoziladi
+                }
                 Yii::$app->session->set('doc_type','inn');
                 Yii::$app->session->set('doc_inn',$model->inn);
             }else{
+                if($ind->load(Yii::$app->request->post())){
+                    $in = Individuals::find()->where(['pnfl'=>$ind->pnfl])->andWhere(['passport'=>$ind->passport])->one();
+                    $in->soato_id = $ind->soato_id;
+                    $in->adress = $ind->adress;
+                    $in->save();
+                }
                 Yii::$app->session->set('doc_type','pnfl');
-                Yii::$app->session->set('doc_pnfl',$model->pnfl);
-                Yii::$app->session->set('doc_document',$model->document);
+                Yii::$app->session->set('doc_pnfl',$in->pnfl);
+                Yii::$app->session->set('doc_document',$in->passport);
+                Yii::$app->session->set('doc_name',$in->name.' '.$in->surname);
             }
-            Yii::$app->session->set('doc_name',$model->name);
+
             return $this->goHome();
         }
         return $this->render('login',[
             'model'=>$model,
+            'ind'=>$ind,
+            'legal'=>$legal
         ]);
     }
 
+    public function actionGetind($passport,$pnfl){
+        if($model = Individuals::find()->where(['passport'=>$passport])->andWhere(['pnfl'=>$pnfl])->one()){
+            $res = "{";
+            $res .= '"code":{"result":200},';
+            $res .= '"data":{';
+            $res .= '"inf":{';
+            $res .= '"document":"'.$model->passport.'",';
+            $res .= '"surname":"'.$model->surname.'",';
+            $res .= '"name":"'.$model->name.'",';
+            $res .= '"middlename":"'.$model->middlename.'",';
+            $res .= '"pnfl":"'.$model->pnfl.'",';
+            $res .= '"adress":"'.$model->adress.'",';
+            $res .= '"region_id":"'.$model->soato->region_id.'",';
+            $res .= '"district_id":"'.$model->soato->district_id.'",';
+            $res .= '"soato_id":"'.$model->soato_id.'"';
+            $res .= "}";
+            $res .= "}";
+            $res .= "}";
+            return $res;
+        }else{
+            $res = get_web_page(Yii::$app->params['hamsa']['url']['getfizinfo'].'?pinfl='.$pnfl.'&document='.$passport,'hamsa');
+
+
+            $res = json_decode($res,true);
+            if($res['code']['result']!=2200){
+                return "-1";
+            }
+
+            $model = new Individuals();
+            $model->passport = $res['data']['inf']['document'];
+            $model->surname = $res['data']['inf']['surname_latin'];
+            $model->name = $res['data']['inf']['name_latin'];
+            $model->middlename = $res['data']['inf']['patronym_latin'];
+            $model->pnfl = $pnfl;
+            $model->adress = '-';
+            $model->soato_id = 1735401554;
+            $model->save();
+            $res = "{";
+            $res .= '"code":{"result":200},';
+            $res .= '"data":{';
+            $res .= '"inf":{';
+            $res .= '"document":"'.$model->passport.'",';
+            $res .= '"surname":"'.$model->surname.'",';
+            $res .= '"name":"'.$model->name.'",';
+            $res .= '"middlename":"'.$model->middlename.'",';
+            $res .= '"pnfl":"'.$model->pnfl.'",';
+            $res .= '"adress":"'.$model->adress.'",';
+            $res .= '"soato_id":"-1"';
+            $res .= "}";
+            $res .= "}";
+            $res .= "}";
+            return $res;
+        }
+    }
     /**
      * Logs out the current user.
      *
@@ -286,5 +364,44 @@ class SiteController extends Controller
         return $this->render('resendVerificationEmail', [
             'model' => $model
         ]);
+    }
+
+
+
+    public function actionGetDistrict($id){
+        $model = DistrictView::find()->where(['region_id'=>$id])->all();
+        $text = Yii::t('cp.vetsites','- Tumanni tanlang -');
+        $res = "<option value=''>{$text}</option>";
+        $lang = Yii::$app->language;
+        foreach ($model as $item){
+            if($lang == 'ru'){
+                $name = $item->name_ru;
+            }elseif($lang == 'oz'){
+                $name = $item->name_cyr;
+            }else{
+                $name = $item->name_lot;
+            }
+            $res .= "<option value='{$item->district_id}'>{$name}</option>";
+        }
+        echo $res;
+        exit;
+    }
+    public function actionGetQfi($id,$regid){
+        $model = QfiView::find()->where(['district_id'=>$id])->andWhere(['region_id'=>$regid])->all();
+        $text = Yii::t('cp.vetsites','- QFYni tanlang -');
+        $res = "<option value=''>{$text}</option>";
+        $lang = Yii::$app->language;
+        foreach ($model as $item){
+            if($lang == 'ru'){
+                $name = $item->name_ru;
+            }elseif($lang == 'oz'){
+                $name = $item->name_cyr;
+            }else{
+                $name = $item->name_lot;
+            }
+            $res .= "<option value='{$item->MHOBT_cod}'>{$name}</option>";
+        }
+        echo $res;
+        exit;
     }
 }

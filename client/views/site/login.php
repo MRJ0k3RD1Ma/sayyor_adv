@@ -1,7 +1,9 @@
 <?php
 use yii\widgets\ActiveForm;
 $this->title = Yii::t('login',"Tizimga kirish");
-/* @var $model \common\models\LoginForm*/
+/* @var $model \client\models\InnForm*/
+/* @var $ind \common\models\Individuals*/
+/* @var $legal \common\models\LegalEntities*/
 ?>
 
 <div class="login-page">
@@ -31,22 +33,49 @@ $this->title = Yii::t('login',"Tizimga kirish");
                 </div>
                 <div class="all" style="display: none">
 
-                    <div class="input">
-                        <span class="fas fa-lock"></span>
-                        <?= $form->field($model, 'name')->textInput(['class'=>'','placeholder'=>Yii::t('login','FIO')]) ?>
-                    </div>
+
                     <div class="ind" style="display: none">
 
                         <div class="input">
                             <span class="fas fa-lock"></span>
-                            <?= $form->field($model, 'document')->textInput(['class'=>'','placeholder'=>Yii::t('login','Pasport seriya raqami')]) ?>
+                            <?= $form->field($ind, 'passport')->textInput(['class'=>'','placeholder'=>Yii::t('login','Pasport seriya raqami')]) ?>
                         </div>
 
                         <div class="input">
                             <span class="fas fa-lock"></span>
-                            <?= $form->field($model, 'pnfl')->textInput(['class'=>'','placeholder'=>Yii::t('login','JSH SHIR(PINFL)')]) ?>
+                            <?= $form->field($ind, 'pnfl')->textInput(['class'=>'','placeholder'=>Yii::t('login','JSH SHIR(PINFL)')]) ?>
+                        </div>
+                        <div class="input">
+                            <span class="fas fa-lock"></span>
+                            <?= $form->field($ind, 'name')->textInput(['class'=>'','placeholder'=>Yii::t('login','Ism')]) ?>
+                        </div>
+                        <div class="input">
+                            <span class="fas fa-lock"></span>
+                            <?= $form->field($ind, 'surname')->textInput(['class'=>'','placeholder'=>Yii::t('login','Familya')]) ?>
+                        </div>
+                        <div class="input">
+                            <span class="fas fa-lock"></span>
+                            <?= $form->field($ind, 'middlename')->textInput(['class'=>'','placeholder'=>Yii::t('login','Otasining ismi')]) ?>
                         </div>
 
+                        <div class="input">
+
+                            <?= $form->field($ind, 'region')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\RegionsView::find()->all(),'region_id','name_lot')) ?>
+                        </div>
+
+                        <div class="input">
+
+                            <?= $form->field($ind, 'district')->dropDownList([]) ?>
+                        </div>
+
+                        <div class="input">
+
+                            <?= $form->field($ind, 'soato_id')->dropDownList([]) ?>
+                        </div>
+                        <div class="input">
+                            <span class="fas fa-lock"></span>
+                            <?= $form->field($ind, 'adress')->textInput(['class'=>'','placeholder'=>Yii::t('login','Manzil')]) ?>
+                        </div>
                     </div>
 
 
@@ -54,11 +83,10 @@ $this->title = Yii::t('login',"Tizimga kirish");
 
                         <div class="input">
                             <span class="fas fa-lock"></span>
-                            <?= $form->field($model, 'inn')->textInput(['class'=>'','placeholder'=>Yii::t('login','STIR(INN)')]) ?>
+                            <?= $form->field($legal, 'inn')->textInput(['class'=>'','placeholder'=>Yii::t('login','STIR(INN)')]) ?>
                         </div>
 
                     </div>
-
 
                     <a href="/site/">Login parol yordamida kirish</a>
 
@@ -91,6 +119,16 @@ $this->title = Yii::t('login',"Tizimga kirish");
 
 
 <style>
+    .login::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .login {
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+        overflow-y: scroll;
+    }
     .sign{
         display: flex;
         justify-content: flex-end;
@@ -177,7 +215,70 @@ $this->title = Yii::t('login',"Tizimga kirish");
 
 
 <?php
+$getind = Yii::$app->urlManager->createUrl(['/site/getind']);
+$url_district = Yii::$app->urlManager->createUrl(['/site/get-district']);
+$url_qfi = Yii::$app->urlManager->createUrl(['/site/get-qfi']);
 $this->registerJs("
+
+    function setind(data){
+        if(data == -1){
+            alert('Pasport ma\'lumotlari topilmadi. Pasport ma\'lumotlaringizni qayta tekshirib ko\'ring.')
+        }else{
+            data = JSON.parse(data);
+            $('#individuals-name').val(data.data.inf.name);
+            $('#individuals-name').attr('disabled',true);
+            $('#individuals-surname').val(data.data.inf.surname);
+            $('#individuals-surname').attr('disabled',true);
+            $('#individuals-middlename').val(data.data.inf.middlename);
+            $('#individuals-middlename').attr('disabled',true);
+            $('#individuals-adress').val(data.data.inf.adress);
+            if(data.data.inf.soato_id!=-1){
+                $('#individuals-region').val(data.data.inf.region_id).trigger('change');
+                setInterval(function () {
+                   if($('#individuals-district').val()){clearInterval();}
+                   else{
+                    $('#individuals-district').val(data.data.inf.district_id).trigger('change');
+                   }
+                }, 500);
+                setInterval(function () {
+                   if($('#individuals-soato_id').val()){clearInterval();}
+                   else{
+                    $('#individuals-soato_id').val(data.data.inf.soato_id);
+                   }
+                }, 500);
+            }
+        }
+    }
+    
+    $('#individuals-region').change(function(){
+        $.get('{$url_district}?id='+$('#individuals-region').val()).done(function(data){
+            $('#individuals-district').empty();
+            $('#individuals-district').append(data);
+        })        
+    });
+    $('#individuals-district').change(function(){
+        $.get('{$url_qfi}?id='+$('#individuals-district').val()+'&regid='+$('#individuals-region').val()).done(function(data){
+            $('#individuals-soato_id').empty();
+            $('#individuals-soato_id').append(data);
+        })        
+    });
+    
+    $('#individuals-passport').keyup(function(){
+        if($('#individuals-passport').val().length == 9 && $('#individuals-pnfl').val().length == 14){
+            $.get('{$getind}?passport='+$('#individuals-passport').val()+'&pnfl='+$('#individuals-pnfl').val()).done(function(data){
+                setind(data);
+            })
+        }
+    });
+    
+    $('#individuals-pnfl').keyup(function(){
+        if($('#individuals-passport').val().length == 9 && $('#individuals-pnfl').val().length == 14){
+            $.get('{$getind}?passport='+$('#individuals-passport').val()+'&pnfl='+$('#individuals-pnfl').val()).done(function(data){
+                setind(data);
+            })
+        }
+    });
+
     $('input[type=radio][name=\"InnForm[type]\"]').change(function(){
     
         $('.all').show();
@@ -185,9 +286,9 @@ $this->registerJs("
 //        if(this.value == 'inn'){
             $('.ind').hide();
             $('.yur').show();
-            $('#innform-name').attr('placeholder','Tashkilot nomi')
+//            $('#innform-name').attr('placeholder','Tashkilot nomi')
         }else{
-            $('#innform-name').attr('placeholder','FIO')
+//            $('#innform-name').attr('placeholder','FIO')
             $('.yur').hide();
             $('.ind').show();
         }

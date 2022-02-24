@@ -82,6 +82,8 @@ class RegisterController extends Controller
         $num = Sertificates::find()->where(['organization_id'=>$org])->max('sert_num');
         if($num==0){
             $num = 1;
+        }else{
+            $num++;
         }
         $code .= $num;
         $model = new Sertificates();
