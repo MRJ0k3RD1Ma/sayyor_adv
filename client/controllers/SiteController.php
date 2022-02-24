@@ -2,6 +2,7 @@
 
 namespace client\controllers;
 
+use client\models\InnForm;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
@@ -94,10 +95,11 @@ class SiteController extends Controller
         return $this->render('index');
     }
 
-    public function actionCreate(){
-
+    public function actionCreate($type = null){
+        if($type){
+            return $this->redirect(['/site/'.$type]);
+        }
         return $this->render('create');
-
     }
 
 
@@ -108,8 +110,23 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
-
-        return $this->render('login',);
+        $model = new InnForm();
+        $this->layout = "login";
+        if($model->load(Yii::$app->request->post())){
+            if($model->type == 'inn'){
+                Yii::$app->session->set('doc_type','inn');
+                Yii::$app->session->set('doc_inn',$model->inn);
+            }else{
+                Yii::$app->session->set('doc_type','pnfl');
+                Yii::$app->session->set('doc_pnfl',$model->pnfl);
+                Yii::$app->session->set('doc_document',$model->document);
+            }
+            Yii::$app->session->set('doc_name',$model->name);
+            return $this->goHome();
+        }
+        return $this->render('login',[
+            'model'=>$model,
+        ]);
     }
 
     /**
@@ -119,8 +136,11 @@ class SiteController extends Controller
      */
     public function actionLogout()
     {
-        Yii::$app->user->logout();
-
+       Yii::$app->session->remove('doc_name');
+       Yii::$app->session->remove('doc_type');
+       Yii::$app->session->remove('doc_inn');
+       Yii::$app->session->remove('doc_pnfl');
+       Yii::$app->session->remove('doc_document');
         return $this->goHome();
     }
 

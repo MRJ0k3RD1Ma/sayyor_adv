@@ -33,10 +33,11 @@ $this->title = Yii::t('login',"Tizimga kirish");
                     <span class="fas fa-lock"></span>
                     <?= $form->field($model, 'password')->passwordInput(['class'=>'','placeholder'=>Yii::t('login','Parol')]) ?>
                 </div>
+
+                <a href="/client">ERI kalit yordamida kirish</a>
+
                 <div class="sign">
                     <div>
-
-
 
                         <button class="btn btn-primary"><?= Yii::t('login','Kirish')?> </button>
                     </div>
