@@ -4,7 +4,7 @@
 
 /* @var $content string */
 
-use frontend\assets\BackAsset;
+use client\assets\BackAsset;
 use common\widgets\Alert;
 use yii\bootstrap4\Breadcrumbs;
 use yii\bootstrap4\Html;

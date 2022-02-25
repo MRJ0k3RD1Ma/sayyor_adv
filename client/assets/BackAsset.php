@@ -30,7 +30,7 @@ class BackAsset extends AssetBundle
         'design/assets/plugins/datatables-buttons/css/buttons.dataTables.min.css',
         'design/assets/css/custom.css',
         'design/assets/plugins/sweetalert2/sweetalert2.min.css',
-
+        'eimzo/services/css.css',
     ];
     public $js = [
         'design/assets/js/bootstrap.bundle.min.js',
@@ -48,9 +48,15 @@ class BackAsset extends AssetBundle
         'design/assets//plugins/datatables-buttons/js/buttons.bootstrap4.min.js',
         'design/assets/plugins/sweetalert2/sweetalert2.min.js',
         'design/assets/js/app.js',
+        'eimzo/services/jquery.reject.js',
+        'eimzo/services/micro-ajax.js',
+        'eimzo/e-imzo.js',
+        'eimzo/e-imzo-client.js',
+
+        'eimzo/services/eimzo/eimzo_old.js',
     ];
     public $depends = [
-        'yii\web\YiiAsset',
-        'yii\bootstrap4\BootstrapAsset',
+//        'yii\web\YiiAsset',
+//        'yii\bootstrap4\BootstrapAsset',
     ];
 }

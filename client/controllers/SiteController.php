@@ -158,7 +158,7 @@ class SiteController extends Controller
 
             return $this->goHome();
         }
-        return $this->render('login',[
+        return $this->render('login1',[
             'model'=>$model,
             'ind'=>$ind,
             'legal'=>$legal
