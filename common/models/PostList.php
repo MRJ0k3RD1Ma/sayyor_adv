@@ -31,7 +31,7 @@ class PostList extends \yii\db\ActiveRecord
     {
         return [
             [['def_role'], 'integer'],
-            [['name'], 'string', 'max' => 50],
+            [['name'], 'string', 'max' => 255],
             [['def_role'], 'exist', 'skipOnError' => true, 'targetClass' => Roles::className(), 'targetAttribute' => ['def_role' => 'id']],
         ];
     }
@@ -43,7 +43,7 @@ class PostList extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'name' => Yii::t('app', 'Lavozim'),
+            'name' => Yii::t('app', 'Bo\'lim'),
             'def_role' => Yii::t('app', 'Huquqi'),
         ];
     }
