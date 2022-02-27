@@ -74,7 +74,10 @@ class LegalEntities extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Soato::className(), ['MHOBT_cod' => 'soato_id']);
     }
+    public function getTshx(){
+        return $this->hasOne(Tshx::className(),['id'=>'tshx_id']);
+    }
     public function getStatus(){
-        return $this->hasOne(StateList::className(),['status_id'=>'id']);
+        return $this->hasOne(StateList::className(),['id'=>'status_id']);
     }
 }

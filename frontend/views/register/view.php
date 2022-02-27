@@ -13,8 +13,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="sertificates-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
         <?= Html::a(Yii::t('cp.sertificates', 'O\'zgartirish'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a(Yii::t('cp.sertificates', 'O\'chirish'), ['delete', 'id' => $model->id], [
@@ -29,14 +27,58 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'sert_id',
+            [
+                'attribute'=>'sert_id',
+                'label'=>Yii::t('test','Dalolatnoma raqami va sanasi'),
+                'value'=>function($d){
+                    return $d->sert_id.'<br>'.$d->sert_date;
+                },
+                'format'=>'raw'
+            ],
             'sert_num',
-            'sert_date',
-            'organization_id',
-            'pnfl',
+//            'sert_date',
+            [
+                'attribute'=>'vet_site_id',
+                'value'=>function($d){
+                    return $d->vetSite->name;
+                }
+            ],
             'owner_name',
-            'vet_site_id',
-            'operator',
+//            'organization_id',
+            'inn',
+            [
+                'label'=>'Tashkilot nomi',
+                'value'=>function($d){
+                    $l = Yii::$app->language;
+                    if($l == 'ru'){
+                        $tshx = $d->inn0->tshx->name_ru;
+                    }else{
+                        $tshx = $d->inn0->tshx->name_uz;
+                    }
+                    return $d->inn0->name.' '.$tshx;
+                }
+            ],
+            [
+                'label'=>Yii::t('test','Manzil'),
+                'value'=>function($d){
+                    $l = Yii::$app->language;
+                    if($l == 'uz'){
+                        $region = \common\models\RegionsView::findOne(['region_id'=>$d->inn0->soato->region_id])->name_lot;
+                        $district = \common\models\DistrictView::find()->where(['district_id'=>$d->inn0->soato->district_id])->andWhere(['region_id'=>$d->inn0->soato->region_id])->one()->name_lot;
+                        $qfi = $d->inn0->soato->name_lot;
+                    }elseif($l == 'oz'){
+                        $region = \common\models\RegionsView::findOne(['region_id'=>$d->inn0->soato->region_id])->name_cyr;
+                        $district = \common\models\DistrictView::find()->where(['district_id'=>$d->inn0->soato->district_id])->andWhere(['region_id'=>$d->inn0->soato->region_id])->one()->name_cyr;
+                        $qfi = $d->inn0->soato->name_cyr;
+                    }else{
+                        $region = \common\models\RegionsView::findOne(['region_id'=>$d->inn0->soato->region_id])->name_ru;
+                        $district = \common\models\DistrictView::find()->where(['district_id'=>$d->inn0->soato->district_id])->andWhere(['region_id'=>$d->inn0->soato->region_id])->one()->name_ru;
+                        $qfi = $d->inn0->soato->name_ru;
+                    }
+                    return $region.' '.$district.' '.$qfi.' '.$d->inn0->address;
+                }
+            ],
+
         ],
     ]) ?>
 

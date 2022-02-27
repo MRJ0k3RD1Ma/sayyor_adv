@@ -144,8 +144,8 @@ class RegisterController extends Controller
         $animal = new Animals();
 
         $sample = new Samples();
-        $animal->pnfl = $model->pnfl;
-        $animal->inn = $model->organization->TIN;
+        $animal->inn = $model->inn;
+
         $sample->animal_id = -1;
         $sample->sert_id = intval($id);
         if(Yii::$app->request->isPost){
