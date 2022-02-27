@@ -1,6 +1,6 @@
 <?php
 
-namespace frontend\models\search;
+namespace frontend\models\search\registr;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -17,8 +17,8 @@ class SertificatesSearch extends Sertificates
     public function rules()
     {
         return [
-            [['sert_id', 'sert_num', 'sert_date', 'pnfl', 'owner_name'], 'safe'],
-            [['organization_id', 'vet_site_id', 'operator'], 'integer'],
+            [['sert_id', 'sert_num', 'inn','sert_date', 'owner_name'], 'safe'],
+            [['organization_id', 'vet_site_id', ], 'integer'],
         ];
     }
 
@@ -40,7 +40,7 @@ class SertificatesSearch extends Sertificates
      */
     public function search($params)
     {
-        $query = Sertificates::find()->where(['organization_id'=>\Yii::$app->user->identity->empPosts->org_id]);
+        $query = Sertificates::find()->where(['organization_id'=>\Yii::$app->user->identity->empPosts->org_id])->orderBy(['id'=>SORT_DESC]);
 
         // add conditions that should always apply here
 
@@ -61,12 +61,11 @@ class SertificatesSearch extends Sertificates
             'sert_date' => $this->sert_date,
             'organization_id' => $this->organization_id,
             'vet_site_id' => $this->vet_site_id,
-            'operator' => $this->operator,
         ]);
 
         $query->andFilterWhere(['like', 'sert_id', $this->sert_id])
             ->andFilterWhere(['like', 'sert_num', $this->sert_num])
-            ->andFilterWhere(['like', 'pnfl', $this->pnfl])
+            ->andFilterWhere(['like', 'inn', $this->inn])
             ->andFilterWhere(['like', 'owner_name', $this->owner_name]);
 
         return $dataProvider;

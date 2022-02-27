@@ -10,7 +10,10 @@ use Yii;
  * @property string $inn
  * @property string|null $name
  * @property integer $tshx_id
+ * @property integer $contragent_id
  * @property string|null $soogu
+ * @property string|null $director
+ * @property string|null $address
  * @property int $soato_id
  * @property int $region
  * @property int $district
@@ -36,8 +39,8 @@ class LegalEntities extends \yii\db\ActiveRecord
     {
         return [
 //            [['inn'], 'required'],
-            [['soato', 'status_id','region','tshx_id','district'], 'integer'],
-            [['inn', 'name', 'soogu'], 'string', 'max' => 255],
+            [['soato_id', 'status_id','region','tshx_id','district','contragent_id'], 'integer'],
+            [['inn', 'name', 'soogu','director','address'], 'string', 'max' => 255],
             [['inn'], 'unique'],
             [['soato_id'], 'exist', 'skipOnError' => true, 'targetClass' => Soato::className(), 'targetAttribute' => ['soato' => 'MHOBT_cod']],
         ];
@@ -57,16 +60,21 @@ class LegalEntities extends \yii\db\ActiveRecord
             'region' => Yii::t('model.legal_entities', 'Viloyat'),
             'district' => Yii::t('model.legal_entities', 'Tuman'),
             'status_id' => Yii::t('model.legal_entities', 'Status'),
+            'director' => Yii::t('model.legal_entities', 'Direktor'),
+            'contragent_id' => Yii::t('model.legal_entities', 'Kontragent'),
         ];
     }
 
     /**
-     * Gets query for [[Soato0]].
+     * Gets query for [[Soato]].
      *
      * @return \yii\db\ActiveQuery
      */
     public function getSoato()
     {
-        return $this->hasOne(Soato::className(), ['MHOBT_cod' => 'soato']);
+        return $this->hasOne(Soato::className(), ['MHOBT_cod' => 'soato_id']);
+    }
+    public function getStatus(){
+        return $this->hasOne(StateList::className(),['status_id'=>'id']);
     }
 }

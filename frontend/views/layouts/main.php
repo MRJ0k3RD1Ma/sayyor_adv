@@ -130,8 +130,13 @@ if(Yii::$app->session->hasFlash('success')){
             })
         })
     ");
-
 }
+
+$this->registerJs("
+    $(document).ready(function() {
+        $('.select2list').select2();
+    }); 
+")
 ?>
 
 

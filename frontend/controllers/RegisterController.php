@@ -11,7 +11,7 @@ use common\models\QfiView;
 use common\models\Samples;
 use common\models\Sertificates;
 use common\models\Vaccination;
-use frontend\models\search\SertificatesSearch;
+use frontend\models\search\registr\SertificatesSearch;
 use yii\base\BaseObject;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -90,26 +90,37 @@ class RegisterController extends Controller
         $model->sert_id = $code;
         $legal = new LegalEntities();
         $ind = new Individuals();
-        $model->ownertype = 1;
         $model->organization_id = $org;
-        $model->operator = $user_id;
-        if($model->load(Yii::$app->request->post())){
 
-            if($model->ownertype == 1 and $ind->load(Yii::$app->request->post())){
-                if($ind->pnfl and $ind->name and $ind->surname and $ind->middlename and $ind->soato_id){
-                    if($withpnfl = Individuals::findOne(['pnfl'=>$ind->pnfl])){
-                        $ind = $withpnfl;
-                        $ind->load(Yii::$app->request->post());
+        if($model->load(Yii::$app->request->post())){
+            $model->sert_id = "$num";
+            if($legal->load(Yii::$app->request->post())){
+                if($l = LegalEntities::findOne($legal->inn)){
+                    $legal = $l;
+                }else{
+                    if(!$legal->save()){
+                        Yii::$app->session->set('error',Yii::t('test','Ma\'lumotlarni to\'dirishda xatolik'));
+                        return $this->render('createtest',[
+                            'model'=>$model,
+                            'legal'=>$legal,
+                            'ind'=>$ind
+                        ]);
                     }
-                    $ind->save();
-                    $model->pnfl = $ind->pnfl;
-                    $model->save();
-                    Yii::$app->session->setFlash('success','Ma\'lumotlar bazaga muvoffaqiyatli yozildi');
+                }
+                $model->inn = $legal->inn;
+                if($model->save()){
+                    Yii::$app->session->set('success',Yii::t('test','Muvoffaqiyatli saqlandi'));
                     return $this->redirect(['viewtest','id'=>$model->id]);
                 }else{
-                    Yii::$app->session->setFlash('error',Yii::t('reg','Maydonlar to\'ldirilmagan'));
+                    Yii::$app->session->set('error',Yii::t('test','Ma\'lumotlarni to\'dirishda xatolik'));
+                    return $this->render('createtest',[
+                        'model'=>$model,
+                        'legal'=>$legal,
+                        'ind'=>$ind
+                    ]);
                 }
             }
+
         }
         $model->sert_id = $code;
         return $this->render('createtest',[
@@ -118,6 +129,8 @@ class RegisterController extends Controller
             'ind'=>$ind
         ]);
     }
+
+
     public function actionViewtest($id)
     {
         return $this->render('view', [
@@ -148,11 +161,7 @@ class RegisterController extends Controller
                     }
                 }
             }
-            /*echo "<pre>";
-//            var_dump($animal);
-            echo "________________<br><br><hr>";
-            var_dump($sample);
-            exit;*/
+
         }
 
         return $this->render('add',[
@@ -203,28 +212,6 @@ class RegisterController extends Controller
         ]);
     }
 
-    public function actionGetInd($pnfl){
-        if($model = Individuals::findOne(['pnfl'=>$pnfl])){
-            $res = "{
-                \"code\":200,
-                \"value\":{\"pnfl\":\"{$pnfl}\",
-                    \"name\":\"{$model->name}\",
-                    \"surname\":\"{$model->surname}\",
-                    \"middlename\":\"{$model->middlename}\",
-                    \"region_id\":\"{$model->soato->region_id}\",
-                    \"district_id\":\"{$model->soato->district_id}\",
-                    \"soato_id\":\"{$model->soato_id}\",
-                    \"passport\":\"{$model->passport}\",
-                    \"adress\":\"{$model->adress}\"
-                }
-            }";
-        }else{
-            $res = "{'code':404}";
-        }
-        echo $res;
-        exit;
-    }
-
 
     public function actionGetDistrict($id){
         $model = DistrictView::find()->where(['region_id'=>$id])->all();
@@ -262,4 +249,24 @@ class RegisterController extends Controller
         echo $res;
         exit;
     }
+
+    public function actionGetLegal($inn){
+        if($model = LegalEntities::findOne(['inn'=>$inn])){
+            return json_encode([
+                'inn'=>$model->inn,
+                'contragent_id'=>$model->contragent_id,
+                'name'=>$model->name,
+                'director'=>$model->director,
+                'tshx'=>$model->tshx_id,
+                'region'=>$model->soato->region_id,
+                'district'=>$model->soato->district_id,
+                'soato_id'=>$model->soato_id,
+                'address'=>$model->address,
+                'status_id'=>$model->status_id
+            ]);
+        }else{
+            return -1;
+        }
+    }
+
 }

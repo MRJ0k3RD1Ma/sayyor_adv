@@ -8,13 +8,16 @@ use yii\widgets\ActiveForm;
 /* @var $ind common\models\Individuals */
 /* @var $legal common\models\LegalEntities */
 /* @var $form yii\widgets\ActiveForm */
+$this->title = Yii::t('test','Ariza qabul qilish');
 ?>
 
 <div class="sertificates-form">
     <?php
     $lang = Yii::$app->language;
+    $lan = 'uz';
     if($lang == 'ru'){
         $ads = 'ru';
+        $lan = 'ru';
     }elseif($lang=='oz'){
         $ads = 'cyr';
     }else{
@@ -29,46 +32,23 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'sert_date')->textInput(['type'=>'date']) ?>
 
-
-    <?= $form->field($model, 'ownertype')->radioList([1=>Yii::t('reg','Jismoniy shaxs'),2=>Yii::t('reg','Yuridik shaxs')]) ?>
-
-    <div class="indiv" style="padding-left: 10px; border-left: 1px solid #f0f0f0;">
-
-        <?= $form->field($ind, 'pnfl')->textInput(['maxlength' => 14,'oninput'=>"this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');",'required'=>true]) ?>
-
-        <?= $form->field($ind, 'name')->textInput(['maxlength' => true]) ?>
-
-        <?= $form->field($ind, 'surname')->textInput(['maxlength' => true]) ?>
-
-        <?= $form->field($ind, 'middlename')->textInput(['maxlength' => true]) ?>
-
-        <?php if($ind->soato_id){
-            $ind->region  = $ind->soato->region_id;
-            $ind->district = $ind->soato->district_id;
-            ?>
-            <?= $form->field($ind, 'region')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\RegionsView::find()->all(),'region_id','name_'.$ads),['prompt'=>Yii::t('cp.individuals','Viloyatni tanlang')]) ?>
-
-            <?= $form->field($ind, 'district')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\DistrictView::find()->where(['region_id'=>$ind->soato->region_id])->all(),'district_id','name_'.$ads),['prompt'=>Yii::t('cp.individuals','Tumanni tanlang')]) ?>
-            <?= $form->field($ind, 'soato_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\QfiView::find()->where(['district_id'=>$ind->soato->district_id])->all(),'MHOBT_cod','name_'.$ads),['prompt'=>Yii::t('cp.individuals','QFYni tanlang')]) ?>
-        <?php }else{ ?>
-            <?= $form->field($ind, 'region')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\RegionsView::find()->all(),'region_id','name_'.$ads),['prompt'=>Yii::t('cp.individuals','Viloyatni tanlang')]) ?>
-
-            <?= $form->field($ind, 'district')->dropDownList([],['prompt'=>Yii::t('cp.individuals','Tumanni tanlang')]) ?>
-            <?= $form->field($ind, 'soato_id')->dropDownList([],['prompt'=>Yii::t('cp.individuals','QFYni tanlang')]) ?>
-        <?php }?>
-
-        <?= $form->field($ind, 'adress')->textInput(['maxlength' => true]) ?>
-
-        <?= $form->field($ind, 'passport')->textInput(['maxlength' => true]) ?>
-
-    </div>
-
-    <div class="legdiv" style="padding-left: 10px; border-left: 1px solid #f0f0f0; display: block;">
-        <?= $form->field($legal,'inn')->textInput(['maxlength' => 9,'oninput'=>"this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');",'required'=>false])?>
-    </div>
     <?= $form->field($model, 'owner_name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'vet_site_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\VetSites::find()->all(),'id','name')) ?>
+
+    <?= $form->field($legal,'inn')->textInput()?>
+    <?= $form->field($legal, 'contragent_id')->dropDownList(\yii\helpers\ArrayHelper::map(\app\models\Contragent::find()->all(),'id','name_'.$lan),['prompt'=>Yii::t('test','Kontragent turi')])?>
+    <?= $form->field($legal,'name')->textInput()?>
+    <?= $form->field($legal,'director')->textInput()?>
+
+    <?= $form->field($legal,'tshx_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Tshx::find()->all(),'id','name_'.$lan),['class'=>'form-control select2list'])?>
+
+    <?= $form->field($legal,'region')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\RegionsView::find()->all(),'region_id','name_'.$ads))?>
+    <?= $form->field($legal,'district')->dropDownList([],['prompt'=>Yii::t('test','Tumanni tanlang')])?>
+    <?= $form->field($legal,'soato_id')->dropDownList([],['prompt'=>Yii::t('test','QFYni tanlang')])?>
+    <?= $form->field($legal,'address')->textInput()?>
+
+    <?= $form->field($legal,'status_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\StateList::find()->all(),'id','name'))?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('cp.sertificates', 'Saqlash'), ['class' => 'btn btn-success']) ?>
@@ -83,63 +63,60 @@ use yii\widgets\ActiveForm;
 <?php
 $url_district = Yii::$app->urlManager->createUrl(['/register/get-district']);
 $url_qfi = Yii::$app->urlManager->createUrl(['/register/get-qfi']);
-$url_pnfl = Yii::$app->urlManager->createUrl(['/register/get-ind']);
+$url_legal = Yii::$app->urlManager->createUrl(['/register/get-legal']);
 $this->registerJs("
-        $('#individuals-region').change(function(){
-            $.get('{$url_district}?id='+$('#individuals-region').val()).done(function(data){
-                $('#individuals-district').empty();
-                $('#individuals-district').append(data);
-            })        
-        })
-        $('#individuals-district').change(function(){
-            $.get('{$url_qfi}?id='+$('#individuals-district').val()+'&regid='+$('#individuals-region').val()).done(function(data){
-                $('#individuals-soato_id').empty();
-                $('#individuals-soato_id').append(data);
-            })        
-        })
-        
-        $('#sertificates-ownertype').change(function(){
-            if($('#sertificates-ownertype').val()==1){
-                   $('#individuals-pnfl').prop('required',true);
-                   $('#legalentities-inn').prop('required',false);
-                   $('#legdiv').hide();
-                   $('#indiv').show();
+       $('#legalentities-inn').keyup(function(){
+            if($('#legalentities-inn').val()[0] == '3' || $('#legalentities-inn').val()[0] == '2'){
+                $('#legalentities-contragent_id').val(2);
             }else{
-                   $('#individuals-pnfl').prop('required',false);
-                   $('#legalentities-inn').prop('required',true);
-                   $('#indiv').hide();
-                   $('#legdiv').show();
+                $('#legalentities-contragent_id').val(1);
             }
-        })
-        
-        
-        $('#individuals-pnfl').keyup(function(){
-            if($('#individuals-pnfl').val().length == 14){
-                $.get('{$url_pnfl}?pnfl='+$('#individuals-pnfl').val()).done(function(data){
-                    data = JSON.parse(data);
-                    $('#individuals-name').val(data.value.name);
-                    $('#individuals-surname').val(data.value.surname);
-                    $('#individuals-middlename').val(data.value.middlename);
-                    $('#individuals-passport').val(data.value.passport);
-                    $('#individuals-adress').val(data.value.adress);
+            if($('#legalentities-inn').val().length == 9){
+                $.get('{$url_legal}?inn='+$('#legalentities-inn').val()).done(function(data){
+                    if(data != -1){
+                        data = JSON.parse(data);
+                        $('#legalentities-name').val(data.name);
+                        $('#legalentities-contragent_id').val(data.contragent_id);
+                        $('#legalentities-director').val(data.director);
+                        $('#legalentities-tshx').val(data.passport).trigger('change');
+                        $('#legalentities-address').val(data.address);
+                        $('#legalentities-status_id').val(data.status_id);
+                        
+                        $('#legalentities-region').val(data.region).trigger('change');
+                        setInterval(function () {
+                           if($('#legalentities-district').val()){clearInterval();}
+                           else{
+                            $('#legalentities-district').val(data.district).trigger('change');
+                           }
+                        }, 500);
+                        setInterval(function () {
+                           if($('#legalentities-soato_id').val()){clearInterval();}
+                           else{
+                            $('#legalentities-soato_id').val(data.soato_id);
+                           }
+                        }, 500);
+                    }else{
+                        alert('Bunday STIR(INN) topilmadi');
+                    }
                     
-                    $('#individuals-region').val(data.value.region_id).trigger('change');
-                    setInterval(function () {
-                       if($('#individuals-district').val()){clearInterval();}
-                       else{
-                        $('#individuals-district').val(data.value.district_id).trigger('change');
-                       }
-                    }, 500);
-                    setInterval(function () {
-                       if($('#individuals-soato_id').val()){clearInterval();}
-                       else{
-                        $('#individuals-soato_id').val(data.value.soato_id);
-                       }
-                    }, 500);
                     
-                   
                 })
             }
-        })
+       })
+       
+       $('#legalentities-region').change(function(){
+            $.get('{$url_district}?id='+$('#legalentities-region').val()).done(function(data){
+                $('#legalentities-district').empty();
+                $('#legalentities-district').append(data);
+            })
+       });
+       $('#legalentities-district').change(function(){
+            $.get('{$url_qfi}?id='+$('#legalentities-district').val()+'&regid='+$('#legalentities-region').val()).done(function(data){
+                $('#legalentities-soato_id').empty();
+                $('#legalentities-soato_id').append(data);
+            })
+       })
+      
+       
     ")
 ?>

@@ -46,7 +46,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
 
-//                            'sert_id',
                             [
                                 'attribute'=>'sert_id',
                                 'format'=>'raw',
@@ -58,18 +57,21 @@ $this->params['breadcrumbs'][] = $this->title;
                             ],
                             'sert_num',
                             'sert_date',
-//                            'organization_id',
-                            'pnfl',
                             'owner_name',
-//                            'vet_site_id',
+                            [
+                                'attribute'=>'inn',
+                                'value'=>function($d){
+                                    return $d->inn0->name.'<br>'.$d->inn;
+                                },
+                                'filter'=>false,
+                                'format'=>'raw'
+                            ],
                             [
                                 'attribute'=>'vet_site_id',
                                 'value'=>function($d){
                                     return $d->vetSite->name;
                                 }
                             ],
-                            //'operator',
-
                             [
                                 'class' => 'yii\grid\ActionColumn',
                                 'urlCreator' => function ($action, $model, $key, $index) {

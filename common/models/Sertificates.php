@@ -12,15 +12,12 @@ use Yii;
  * @property string|null $sert_date
  * @property int|null $organization_id Бу ерда асли стир бўлиши керак.
  * @property string $inn
- * @property string $pnfl
  * @property string|null $owner_name
  * @property int|null $vet_site_id
- * @property int|null $operator
  * @property int $ownertype
  *
- * @property Employees $operator0
  * @property Organizations $organization
- * @property Individuals $pnfl0
+ * @property LegalEntities $inn0
  * @property VetSites $vetSite
  */
 class Sertificates extends \yii\db\ActiveRecord
@@ -42,11 +39,10 @@ class Sertificates extends \yii\db\ActiveRecord
         return [
             [['sert_id'], 'required'],
             [['sert_date'], 'safe'],
-            [['organization_id', 'vet_site_id', 'operator','ownertype'], 'integer'],
+            [['organization_id', 'vet_site_id', 'ownertype'], 'integer'],
             [['sert_id', 'sert_num'], 'string', 'max' => 100],
-            [['pnfl', 'owner_name','inn'], 'string', 'max' => 255],
+            [['owner_name','inn'], 'string', 'max' => 255],
             [['sert_id'], 'unique'],
-            [['operator'], 'exist', 'skipOnError' => true, 'targetClass' => Employees::className(), 'targetAttribute' => ['operator' => 'id']],
             [['organization_id'], 'exist', 'skipOnError' => true, 'targetClass' => Organizations::className(), 'targetAttribute' => ['organization_id' => 'id']],
         ];
     }
@@ -61,23 +57,11 @@ class Sertificates extends \yii\db\ActiveRecord
             'sert_num' => Yii::t('model.sertificates', 'Dalolatnoma raqami(Qog\'ozdagi yoki registondagi)'),
             'sert_date' => Yii::t('model.sertificates', 'Sana'),
             'organization_id' => Yii::t('model.sertificates', 'Tashkilot'),
-            'pnfl' => Yii::t('model.sertificates', 'PNFL'),
             'owner_name' => Yii::t('model.sertificates', 'Egasi'),
             'vet_site_id' => Yii::t('model.sertificates', 'Vet uchstka'),
-            'operator' => Yii::t('model.sertificates', 'Operator'),
             'ownertype' => Yii::t('model.sertificates', 'Kontragent turi'),
             'inn' => Yii::t('model.sertificates', 'INN(STIR)'),
         ];
-    }
-
-    /**
-     * Gets query for [[Operator0]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getOperator0()
-    {
-        return $this->hasOne(Employees::className(), ['id' => 'operator']);
     }
 
     /**
@@ -90,15 +74,6 @@ class Sertificates extends \yii\db\ActiveRecord
         return $this->hasOne(Organizations::className(), ['id' => 'organization_id']);
     }
 
-    /**
-     * Gets query for [[Pnfl0]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getPnfl0()
-    {
-        return $this->hasOne(Individuals::className(), ['pnfl' => 'pnfl']);
-    }
 
     /**
      * Gets query for [[VetSite]].
