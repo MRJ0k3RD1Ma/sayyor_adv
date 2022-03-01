@@ -17,7 +17,7 @@ class SampleTypesSearch extends SampleTypes
     public function rules()
     {
         return [
-            [['id', 'state'], 'integer'],
+            [['id', ], 'integer'],
             [['name_uz', 'name_ru'], 'safe'],
         ];
     }
@@ -59,7 +59,6 @@ class SampleTypesSearch extends SampleTypes
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'state' => $this->state,
         ]);
 
         $query->andFilterWhere(['like', 'name_uz', $this->name_uz])

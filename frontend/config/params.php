@@ -11,6 +11,7 @@ return [
         'url'=>[
             'token'=>'http://hamsa.vetgov.uz/api/gettoken',
             'getjurinfo'=>'http://hamsa.vetgov.uz/api/getjurinfo',
+            'getanimalinfo'=>'http://hamsa.vetgov.uz/api/getanimalinfo',
         ],
     ],
 ];

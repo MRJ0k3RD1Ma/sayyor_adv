@@ -14,7 +14,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'kod')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'pnfl')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Individuals::find()->all(),'pnfl','name'),['prompt'=>'PNFLni tanlang']) ?>
 
     <?= $form->field($model, 'organization_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Organizations::find()->all(),'id','NAME_FULL'),['prompt'=>'Tashkilotni tanlang']) ?>
 

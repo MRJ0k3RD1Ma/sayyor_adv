@@ -31,10 +31,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute'=>'sert_id',
                 'label'=>Yii::t('test','Dalolatnoma raqami va sanasi'),
                 'value'=>function($d){
-                    return $d->sert_id.'<br>'.$d->sert_date;
+                    $code = substr(date('Y',strtotime($d->sert_date)),2,2).'-1-'.get3num($d->organization_id).'-'.$d->sert_id;
+                    return '<b>№'.$code.'</b><br>'.$d->sert_date;
                 },
                 'format'=>'raw'
             ],
+
             'sert_num',
 //            'sert_date',
             [

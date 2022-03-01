@@ -47,7 +47,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 //                            'id',
                             'kod',
-                            'pnfl',
 //                            'organization_id',
 //                            'sampling_site',
                             'sampling_adress',

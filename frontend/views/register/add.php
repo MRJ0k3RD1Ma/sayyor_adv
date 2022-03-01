@@ -25,6 +25,8 @@ $this->params['breadcrumbs'][] = Yii::t('cp.sertificates', 'Hayvon qo\'shish');
 
     <?= $form->field($sample, 'sample_box_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\SampleBoxes::find()->all(),'id','name_uz'),['prompt'=>'Namuna o\'ramini tanlang']) ?>
 
+    <?= $form->field($animal, 'bsual_tag')->textInput(['maxlength' => true]) ?>
+
     <?= $form->field($animal, 'name')->textInput(['maxlength' => true]) ?>
     <?php
     $lang = Yii::$app->language;
@@ -63,12 +65,9 @@ $this->params['breadcrumbs'][] = Yii::t('cp.sertificates', 'Hayvon qo\'shish');
 
     <?= $form->field($animal, 'vet_site_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\VetSites::find()->all(),'id','name'),['prompt'=>Yii::t('cp.animals','Vet uchastkani tanlang')]) ?>
 
-    <?= $form->field($animal, 'bsual_tag')->textInput(['maxlength' => true]) ?>
-
-
     <?= $form->field($sample, 'test_mehod_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\TestMethod::find()->all(),'id','name_uz'),['prompt'=>'Tahlil usulini tanlang']) ?>
 
-    <?= $form->field($sample, 'suspected_disease_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Diseases::find()->all(),'id','name_uz'),['prompt'=>'Kasallik turini tanlang']) ?>
+    <?= $form->field($sample, 'suspected_disease_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Diseases::find()->all(),'id','name_uz'),['prompt'=>'Kasallik turini tanlang','class'=>'form-control select2list']) ?>
 
 
     <div class="form-group">
@@ -79,3 +78,25 @@ $this->params['breadcrumbs'][] = Yii::t('cp.sertificates', 'Hayvon qo\'shish');
 
 
 </div>
+<?php
+$url = Yii::$app->urlManager->createUrl(['/register/getbirka']);
+$this->registerJs("
+    $('#animals-bsual_tag').keyup(function(){
+        if($('#animals-bsual_tag').val().length == 12){
+            $.get('{$url}?id='+$('#animals-bsual_tag').val()).done(function(data){
+              
+                data = JSON.parse(data);
+                if(data.code.result=='2200'){
+                       
+                    $('#animals-birthday').val(new Date(data.data.birth).toISOString().substring(0,10));
+                    $('#animals-inn').val(data.data.tin);
+                    $('#animals-type_id').val(data.data.type);
+                    $('#animals-gender').val(data.data.sex);
+                    $('#animals-adress').val(data.data.address);
+                    $('#animals-name').val(data.data.owner);
+                }
+            })
+        }
+    })
+")
+?>

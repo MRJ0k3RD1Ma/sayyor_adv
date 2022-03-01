@@ -7,6 +7,7 @@ use common\models\DistrictView;
 use common\models\Emlash;
 use common\models\Individuals;
 use common\models\LegalEntities;
+use common\models\Organizations;
 use common\models\QfiView;
 use common\models\Samples;
 use common\models\Sertificates;
@@ -157,7 +158,7 @@ class RegisterController extends Controller
                     $sample->animal_id = $animal->id;
                     $sample->sert_id = intval($id);
                     if($sample->save(false)){
-                        return $this->redirect(['view','id'=>$id]);
+                        return $this->redirect(['viewtest','id'=>$id]);
                     }
                 }
             }
@@ -184,7 +185,7 @@ class RegisterController extends Controller
         $model->animal_id = $id;
         $animal = Animals::findOne($id);
         if($model->load(Yii::$app->request->post()) and $model->save()){
-            return $this->redirect(['view','id'=>$sert_id]);
+            return $this->redirect(['viewtest','id'=>$sert_id]);
         }
         return $this->render('vaccination',['model'=>$model,'animal'=>$animal]);
     }
@@ -195,7 +196,7 @@ class RegisterController extends Controller
         $model->animal_id = $id;
         $animal = Animals::findOne($id);
         if($model->load(Yii::$app->request->post()) and $model->save()){
-            return $this->redirect(['view','id'=>$sert_id]);
+            return $this->redirect(['viewtest','id'=>$sert_id]);
         }
         return $this->render('emlash',['model'=>$model,'animal'=>$animal]);
 
@@ -266,6 +267,25 @@ class RegisterController extends Controller
             ]);
         }else{
             return -1;
+        }
+    }
+
+    public function actionGetbirka($id){
+        if($model = Animals::findOne(['bsual_tag'=>$id])){
+            return json_encode([
+                'code'=>['result'=>'2200'],
+                'data'=>[
+                    'id'=>$model->id,
+                    'birth'=>$model->birthday,
+                    'tin'=>$model->inn,
+                    'type'=>$model->type_id,
+                    'sex'=>$model->gender,
+                    'address'=>$model->adress,
+                    'owner'=>$model->name,
+                ]
+            ]);
+        }else{
+            return get_web_page(Yii::$app->params['hamsa']['url']['getanimalinfo'].'?birka='.$id,'hamsa');
         }
     }
 

@@ -13,7 +13,6 @@ use Yii;
  * @property int|null $gender
  * @property string|null $birthday
  * @property string|null $inn
- * @property string|null $pnfl
  * @property string|null $adress
  * @property int|null $vet_site_id
  * @property string|null $bsual_tag
@@ -44,7 +43,7 @@ class Animals extends \yii\db\ActiveRecord
             [['cat_id', 'gender', 'vet_site_id', 'type_id'], 'integer'],
             [['birthday'], 'safe'],
             [['name'], 'string', 'max' => 50],
-            [['inn', 'pnfl', 'adress', 'bsual_tag'], 'string', 'max' => 255],
+            [['inn', 'adress', 'bsual_tag'], 'string', 'max' => 255],
 //            [['cat_id'], 'exist', 'skipOnError' => true, 'targetClass' => AnimalCategory::className(), 'targetAttribute' => ['cat_id' => 'id']],
             [['type_id'], 'exist', 'skipOnError' => true, 'targetClass' => Animaltype::className(), 'targetAttribute' => ['type_id' => 'id']],
             [['vet_site_id'], 'exist', 'skipOnError' => true, 'targetClass' => VetSites::className(), 'targetAttribute' => ['vet_site_id' => 'id']],
@@ -63,7 +62,6 @@ class Animals extends \yii\db\ActiveRecord
             'gender' => Yii::t('model.animals', 'Jinsi'),
             'birthday' => Yii::t('model.animals', 'Tug\'ilgan kuni'),
             'inn' => Yii::t('model.animals', 'INN(STIR)'),
-            'pnfl' => Yii::t('model.animals', 'PNFL'),
             'adress' => Yii::t('model.animals', 'Manzil'),
             'vet_site_id' => Yii::t('model.animals', 'Vet uchastka'),
             'bsual_tag' => Yii::t('model.animals', 'Visual birka'),

@@ -9,7 +9,6 @@ use Yii;
  *
  * @property int $id
  * @property string|null $kod
- * @property string|null $pnfl
  * @property int|null $organization_id
  * @property int|null $sampling_site
  * @property string|null $sampling_adress
@@ -61,10 +60,9 @@ class FoodSamplingCertificate extends \yii\db\ActiveRecord
             [['organization_id', 'sampling_site', 'sampler_organization_code', 'sampler_person_pnfl', 'unit_id', 'verification_sample', 'verification_pupose_id', 'sample_box_id', 'sample_condition_id', 'based_public_information', 'message_number', 'laboratory_test_type_id'], 'integer'],
             [['count'], 'number'],
             [['manufacture_date', 'sell_by', 'sampling_date', 'send_sample_date'], 'safe'],
-            [['kod', 'pnfl', 'sampling_adress', 'producer', 'serial_num', 'coments', 'explanations'], 'string', 'max' => 255],
+            [['kod',  'sampling_adress', 'producer', 'serial_num', 'coments', 'explanations'], 'string', 'max' => 255],
             [['laboratory_test_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => LaboratoryTestType::className(), 'targetAttribute' => ['laboratory_test_type_id' => 'id']],
             [['verification_pupose_id'], 'exist', 'skipOnError' => true, 'targetClass' => VerificationPurposes::className(), 'targetAttribute' => ['verification_pupose_id' => 'id']],
-            [['pnfl'], 'exist', 'skipOnError' => true, 'targetClass' => Individuals::className(), 'targetAttribute' => ['pnfl' => 'pnfl']],
             [['organization_id'], 'exist', 'skipOnError' => true, 'targetClass' => Organizations::className(), 'targetAttribute' => ['organization_id' => 'id']],
             [['sample_box_id'], 'exist', 'skipOnError' => true, 'targetClass' => SampleBoxes::className(), 'targetAttribute' => ['sample_box_id' => 'id']],
             [['unit_id'], 'exist', 'skipOnError' => true, 'targetClass' => Units::className(), 'targetAttribute' => ['unit_id' => 'id']],
@@ -80,7 +78,6 @@ class FoodSamplingCertificate extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('model.food_sampling_certificate', 'ID'),
             'kod' => Yii::t('model.food_sampling_certificate', 'Kod'),
-            'pnfl' => Yii::t('model.food_sampling_certificate', 'PMFL'),
             'organization_id' => Yii::t('model.food_sampling_certificate', 'Tashkilot'),
             'sampling_site' => Yii::t('model.food_sampling_certificate', 'Namuna olish joyi'),
             'sampling_adress' => Yii::t('model.food_sampling_certificate', 'Namuna olish joyi manzili'),
@@ -126,15 +123,6 @@ class FoodSamplingCertificate extends \yii\db\ActiveRecord
         return $this->hasOne(Organizations::className(), ['id' => 'organization_id']);
     }
 
-    /**
-     * Gets query for [[Pnfl0]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getPnfl0()
-    {
-        return $this->hasOne(Individuals::className(), ['pnfl' => 'pnfl']);
-    }
 
     /**
      * Gets query for [[SampleBox]].

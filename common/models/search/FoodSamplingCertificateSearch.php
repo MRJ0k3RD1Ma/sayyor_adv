@@ -18,7 +18,7 @@ class FoodSamplingCertificateSearch extends FoodSamplingCertificate
     {
         return [
             [['id', 'organization_id', 'sampling_site', 'sampler_organization_code', 'sampler_person_pnfl', 'unit_id', 'verification_sample', 'verification_pupose_id', 'sample_box_id', 'sample_condition_id', 'based_public_information', 'message_number', 'laboratory_test_type_id'], 'integer'],
-            [['kod', 'pnfl', 'sampling_adress', 'producer', 'serial_num', 'manufacture_date', 'sell_by', 'coments', 'sampling_date', 'send_sample_date', 'explanations'], 'safe'],
+            [['kod',  'sampling_adress', 'producer', 'serial_num', 'manufacture_date', 'sell_by', 'coments', 'sampling_date', 'send_sample_date', 'explanations'], 'safe'],
             [['count'], 'number'],
         ];
     }
@@ -80,7 +80,6 @@ class FoodSamplingCertificateSearch extends FoodSamplingCertificate
         ]);
 
         $query->andFilterWhere(['like', 'kod', $this->kod])
-            ->andFilterWhere(['like', 'pnfl', $this->pnfl])
             ->andFilterWhere(['like', 'sampling_adress', $this->sampling_adress])
             ->andFilterWhere(['like', 'producer', $this->producer])
             ->andFilterWhere(['like', 'serial_num', $this->serial_num])
