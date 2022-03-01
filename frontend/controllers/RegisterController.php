@@ -2,16 +2,20 @@
 
 namespace frontend\controllers;
 
+use common\models\ProductExpertise;
 use common\models\Animals;
 use common\models\DistrictView;
 use common\models\Emlash;
+use common\models\FoodSamplingCertificate;
 use common\models\Individuals;
 use common\models\LegalEntities;
 use common\models\Organizations;
 use common\models\QfiView;
 use common\models\Samples;
 use common\models\Sertificates;
+use common\models\Soato;
 use common\models\Vaccination;
+use common\models\VetSites;
 use frontend\models\search\registr\SertificatesSearch;
 use yii\base\BaseObject;
 use yii\web\Controller;
@@ -80,7 +84,7 @@ class RegisterController extends Controller
         $org = $user->empPosts->org_id;
         $user_id = Yii::$app->user->getId();
         $code = substr(date('Y'),2,2).'-1-'.get3num($org).'-';
-        $num = Sertificates::find()->where(['organization_id'=>$org])->max('sert_num');
+        $num = Sertificates::find()->where(['organization_id'=>$org])->andFilterWhere(['like','sert_date',date('Y')])->max('sert_id');
         if($num==0){
             $num = 1;
         }else{
@@ -153,7 +157,22 @@ class RegisterController extends Controller
 
             if($animal->load(Yii::$app->request->post())){
                 $animal->inn = "{$animal->inn}";
-                if($animal->save()){}
+                if($a = Animals::findOne(['bsual_tag'=>$animal->bsual_tag])){
+                    if($a->load(Yii::$app->request->post())){
+                        $a->save();
+                        $animal = $a;
+                    }
+                }else{
+                    if(!$animal->save()){
+                        Yii::$app->session->setFlash('error',Yii::t('test','Ma\'lumotlar to\'liq to\'ldirilmagan'));
+
+                        return $this->render('add',[
+                            'model'=>$model,
+                            'animal'=>$animal,
+                            'sample'=>$sample
+                        ]);
+                    }
+                }
                 if($sample->load(Yii::$app->request->post())){
                     $sample->animal_id = $animal->id;
                     $sample->sert_id = intval($id);
@@ -179,6 +198,7 @@ class RegisterController extends Controller
 
         throw new NotFoundHttpException(Yii::t('cp.sertificates', 'The requested page does not exist.'));
     }
+
     public function actionVaccination($id,$sert_id){
 
         $model = new Vaccination();
@@ -202,6 +222,57 @@ class RegisterController extends Controller
 
     }
 
+
+    public function actionCreateproduct(){
+        $model = new FoodSamplingCertificate();
+        $legal = new LegalEntities();
+
+        if($model->load(Yii::$app->request->post())){
+
+            $user = Yii::$app->user->identity;
+            $org = $user->empPosts->org_id;
+            $user_id = Yii::$app->user->getId();
+            $soato = Soato::findOne(['MHOBT_cod'=>$model->samplingSite->soato]);
+            $code = $soato->region_id.'-'.$soato->district_id.'-'.substr(date('Y'),2,2).'-';
+            $num = FoodSamplingCertificate::find()->where(['organization_id'=>$org])->andFilterWhere(['like','sampling_date',date('Y')])->max('kod');
+            if($num==0){
+                $num = 1;
+            }else{
+                $num = $num+1;
+            }
+            $model->kod = $num;
+
+            if($legal->load(Yii::$app->request->post())){
+                if($l = LegalEntities::findOne($legal->inn)){
+                    $legal = $l;
+                }else{
+                    if(!$legal->save()){
+                        Yii::$app->session->set('error',Yii::t('test','Ma\'lumotlarni to\'dirishda xatolik'));
+                        return $this->render('createproduct',[
+                            'model'=>$model,
+                            'legal'=>$legal,
+                        ]);
+                    }
+                }
+                $model->sampler_person_inn = $legal->inn;
+                if($model->save()){
+                    Yii::$app->session->set('success',Yii::t('test','Muvoffaqiyatli saqlandi'));
+                    return $this->redirect(['viewproduct','id'=>$model->id]);
+                }else{
+                    Yii::$app->session->set('error',Yii::t('test','Ma\'lumotlarni to\'dirishda xatolik'));
+                    return $this->render('createproduct',[
+                        'model'=>$model,
+                        'legal'=>$legal,
+                    ]);
+                }
+            }
+        }
+
+        return $this->render('createproduct',[
+            'model'=>$model,
+            'legal'=>$legal
+        ]);
+    }
 
     public function actionIndextest(){
         $searchModel = new SertificatesSearch();
@@ -288,5 +359,15 @@ class RegisterController extends Controller
             return get_web_page(Yii::$app->params['hamsa']['url']['getanimalinfo'].'?birka='.$id,'hamsa');
         }
     }
+    public function actionGetVetsites($id){
+        $model = VetSites::find()->where(['soato'=>$id])->all();
+        $text = Yii::t('cp.vetsites','- Vet uchstkani tanlang -');
+        $res = "<option value=''>{$text}</option>";
+        foreach ($model as $item){
 
+            $res .= "<option value='{$item->id}'>{$item->name}</option>";
+        }
+        echo $res;
+        exit;
+    }
 }
