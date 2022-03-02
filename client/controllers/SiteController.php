@@ -136,6 +136,7 @@ class SiteController extends Controller
         $this->layout = "login";
         $ind = new Individuals();
         $legal = new LegalEntities();
+
         if($model->load(Yii::$app->request->post())){
             if($model->type == 'inn'){
                 if($legal->load(Yii::$app->request->post())){
